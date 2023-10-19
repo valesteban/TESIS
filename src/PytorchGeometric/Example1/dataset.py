@@ -2,15 +2,17 @@ from torch_geometric.data import InMemoryDataset, Data
 from torch_geometric.datasets import Planetoid
 from torch_geometric.transforms import NormalizeFeatures
 import os
+import pandas as pd
+import torch
 
-"""
-InMemoriDataset should be used if the whole dataset fits into CPU memory.
-"""
-class CustomDataset(InMemoryDataset):
-    def __init__(self, root, transform=None, pre_transform=None):
-        super().__init__(root, transform, pre_transform)
-        self.data = self.process()
+df_nodes = pd.read_excel("data/node_features.xlsx")
+df_link = pd.read_excel("data/link_nodes.xlsx")
 
+
+class MyOwnDataset(InMemoryDataset):
+    def __init__(self, root, transform=None, pre_transform=None, pre_filter=None):
+        super().__init__(root, transform, pre_transform, pre_filter)
+        self.data, self.slices = torch.load(self.processed_paths[0])
 
     @property
     def raw_file_names(self):
@@ -24,7 +26,7 @@ class CustomDataset(InMemoryDataset):
         """
         A list of files in the processed_dir which needs to be found in order to skip the processing
         """
-        return ['custom_cora_data.pt']
+        return []
 
     def download(self):
         """
@@ -36,18 +38,11 @@ class CustomDataset(InMemoryDataset):
         """
         Processes raw data and saves it into the processed_dir
         """
-        
-        # Si los datos no están en disco, cargar el dataset "Cora"
-        dataset = Planetoid(root='data/Planetoid', name='Cora', transform=NormalizeFeatures())
+    data = pd.read_excel("data/node_features.xlsx")  # Cargar datos desde Excel
+    x = torch.tensor(data.iloc[:,:-1].values, dtype=torch.float)
+    y = torch.tensor(data['y'].values, dtype=torch.long)
 
-        data = dataset[0]  # Obtener el primer grafo en el dataset "Cora"
-
-        # Crear un objeto Data con los atributos de "Cora"
-        data = Data(x=data.x, edge_index=data.edge_index, y=data.y)
-
-        return data
-    
-# dataset = CustomDataset("data/Planetoid")
-# print(f"Numero clases {dataset.num_classes}")
-# print(f"Numero features {dataset.num_features}")
-# print(dataset[0])
+# # dataset = CustomDataset("data/Planetoid")
+# # print(f"Numero clases {dataset.num_classes}")
+# # print(f"Numero features {dataset.num_features}")
+# # print(dataset[0])
