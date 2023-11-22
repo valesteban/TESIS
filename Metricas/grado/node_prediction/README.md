@@ -1,6 +1,25 @@
 # Grado
  La centralidad de grado es una medida en teoría de redes que evalúa la importancia de un nodo en una red según el número de conexiones que tiene. 
 
+```
+├── grado
+     ├── node_prediction
+          ├── gnn.py
+          ├── models.py
+          ├── predictions.py
+
+```
+
+## model.py
+Contiene las clases para los diferentes modelos de GNN que  se usarán
+
+## gnn.py 
+Contine la clase que va controlando el flujo 
+
+## predictions.py
+Es el archivo principal que corre todo el codigo de entrenamiento y test 
+
+
 
 
 # Cosas 
