@@ -22,8 +22,8 @@ class GNN:
         # Grafo DGL que contiene los test edges
         self.test_graph = None
         
-    def load_dataset(self, force_reload=False):
-        self.graph = dgl.data.CSVDataset("Metricas/data", force_reload=force_reload)[0]
+    def load_dataset(self, path_data ,force_reload=False):
+        self.graph = dgl.data.CSVDataset(path_data, force_reload=force_reload)[0]
         if self.debug:
             print('[load_dataset]')
             print('[graph]:',self.graph)

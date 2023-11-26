@@ -5,18 +5,19 @@ import dgl
 import torch
 import torch.nn as nn
 
-
+path_data_featuresless =  "Metricas/data_featuresless"
+path_data_with_features = "Metricas/data"
 
 gnn = GNN(debug=True)
 
-gnn.load_dataset(force_reload=False)
+gnn.load_dataset(path_data=path_data_with_features,force_reload=False)
 gnn.split_dataset(0.1)
 gnn.add_centrality_label()
 
 in_feat = gnn.graph.ndata['feat'].shape[1]
 model = GCN(in_feat, in_feat*2)
 
-optimizer = Adam(model.parameters(), lr=0.01)
+optimizer = Adam(model.parameters(), lr=0.30)
 criterion = nn.MSELoss()
 
 print("+++++++++++++TRAIN++++++++++++++++++++")
