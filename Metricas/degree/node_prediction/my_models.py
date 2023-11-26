@@ -52,28 +52,27 @@ class Model(nn.Module):
 """
 class MPUnoLayer(nn.Module):
  
-  def __init__(self,in_feat, out_feat):
-    super(MPUnoLayer,self).__init__()
-    self.linear = nn.Linear(in_feat, out_feat)
+  def __init__(self ):
+    super(MPUnoLayer, self).__init__()
+    self.linear = nn.Linear(1, 1)
 
-  def forward(self, g, h=None):
+  def forward(self, g):
     with g.local_scope():
-        g.ndata["h"] = 1
+        g.ndata["h"] = torch.ones((g.num_nodes(), 1))  # Usar torch.ones para inicializar los nodos con el valor 1
         g.update_all(
-            message_func=fn.copy_u('h', 'm'), #copia los features de los nodos (h) para ser enviados (copia en m)
-            reduce_func=fn.sum('m', 'h_N'))  #suma todos los "m" en h_n
+            message_func=fn.copy_u('h', 'm'),  # Copia los features de los nodos (h) para ser enviados (copia en m)
+            reduce_func=fn.sum('m', 'h_N'))  # Suma todos los "m" en h_n
         h_N = g.ndata['h_N']
-        return self.linear(h_N)
+        return  self.linear(h_N)
 
 class ModelUno(nn.Module):
-    def __init__(self, in_feats, out_feats):
-        super(MPUnoLayer, self).__init__()
+    def __init__(self):
+        super(ModelUno, self).__init__()  # Corregir el nombre de la clase
         self.gnn = MPUnoLayer()
 
-    def forward(self, g, h):
-        h = self.gnn(g, h)
+    def forward(self, g):
+        h = self.gnn(g)
         return h
-
 
 
 """
