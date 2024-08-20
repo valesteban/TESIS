@@ -1,0 +1,5 @@
+dataset_name: DiGraph
+edge_data:
+- file_name: edges.csv
+node_data:
+- file_name: nodes.csv
