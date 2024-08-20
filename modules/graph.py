@@ -96,12 +96,13 @@ class Graph:
 
         
 
-    def node_features_nodes(self,features_filename):
+    def node_features_nodes(self,features_filename, list_feat = "all"):
         """
-        Crea archivo nodes.csv con los nodos y sus features
+        Crea archivo nodes.csv con los nodos y sus features.
+        Si no se le pasa la lista de features se asumen que se crea con todo
         """
         
-        # TODO: hacer lago para que se pueda ir variando los features de nodos GRP SEARCH
+        # TODO: hacer que se pueda ir variando los features de nodos GRP SEARCH
         # FIXME: tengo que agregar la creacion de nx_graph al final de la funcion read_from_relationship_edgelist(...)
         features = pd.read_csv(features_filename)
         
