@@ -1,5 +1,0 @@
-dataset_name: AS_dataset
-edge_data:
-- file_name: edges.csv
-node_data:
-- file_name: nodes.csv
