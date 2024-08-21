@@ -18,7 +18,7 @@ class CAIDARelationshipsDownload:
         """
         Descarga un archivo desde una URL y lo guarda en una carpeta destino. 
         """
-        
+        # FIXME: arrglar  
         current_directory = os.getcwd() + "/datasets/CAIDA_AS_Relationships/"+ folder_name
         print(current_directory)
         # Creamos carpeta si no existe
