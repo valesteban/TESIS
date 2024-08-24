@@ -5,8 +5,8 @@ import os
 import numpy as np
 import random
 random.seed(7)
-
-from oix_utils import *
+from .oix_utils import *
+# from utils import get_routes_from_oix
 
 try:
     print('PYTHONHASHSEED', os.environ['PYTHONHASHSEED'])
@@ -18,7 +18,7 @@ except:
 
 class BGP2VEC:
     def __init__(self, model_path, oix_path=None, rewrite=False, embedding_size=32, negative=5, epochs=3, window=2,
-                 shuffle=True, word_fq_dict=None, mode=None, test_limit=None, asn_list=None, ap_list=None):
+                 shuffle=False, word_fq_dict=None, mode=None, test_limit=None, asn_list=None, ap_list=None):
 
         self.model_path = model_path
         self.model = None
@@ -29,24 +29,34 @@ class BGP2VEC:
             logging.info(("Start generating BGP2VEC model for ", oix_path))
             self.routes = get_routes_from_oix(oix_path, by_vantage=False, mode=mode, test_limit=test_limit,
                                               asn_list=asn_list, ap_list=ap_list)
+            print(f"[ROUTES GUARDADAS]")
             if shuffle:
+                print("SHUFFLE")
                 random.shuffle(self.tagged_routes)
             self.build_model(embedding_size, window, negative, epochs)
             self.export_model()
 
     def build_model(self, embedding_size, window, negative, epochs):
-        self.model = Word2Vec(size=embedding_size, min_count=1, window=window, sg=1, hs=0, negative=negative,
-                              workers=1, iter=1, seed=7)
+        print("[BUILD MODEL]")
+        self.model = Word2Vec(vector_size=embedding_size, min_count=1, window=window, sg=1, hs=0, negative=negative,
+                              workers=1, epochs=1, seed=7)
+        print("*")
         if self.word_fq_dict:
+            print("*")
             self.model.build_vocab_from_freq(self.word_fq_dict)
         else:
+            print("build_vocab")
             self.model.build_vocab(self.routes, progress_per=1000000)
-        logging.info(("Vocabulary size:", len(self.model.wv.vocab)))
+        
+        print("*")
+        # logging.info(("Vocabulary size:", len(self.model.wv.vocab)))
 
-        logging.info("Start training model")
+        # logging.info("Start training model")
+        # print("*")
         self.model.train(self.routes, total_examples=len(self.routes), epochs=epochs, report_delay=30)
 
     def export_model(self):
+        print("[EXPORT MODEL]")
         self.model.save(self.model_path)
         logging.info(('Exported:', self.model_path))
 
