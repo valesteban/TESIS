@@ -23,7 +23,7 @@ def get_routes_from_oix(oix_path, dt=None, remove_dup=True, remove_first=False, 
                                                                                by_ap=by_ap, mode=mode, by_asn = by_asn,
                                                                                test_limit=test_limit,
                                                                                asn_list=asn_list, ap_list=ap_list)
-                print("[HECHAS R OUTES]", routes_by_vantage)
+                # print("[HECHAS R OUTES]", routes_by_vantage)
         else:
             with open(oix_path) as f:
                 routes_by_vantage, counter = generate_routes_from_file_handler(f, remove_dup=remove_dup, remove_first=remove_first,
@@ -152,11 +152,11 @@ def generate_routes_from_file_handler(f, remove_dup=True, remove_first=False, by
         return routes_by_asn, counter
 
     else:
-        print("ROUTES")
+        # print("ROUTES")
         routes = []
         for i, line in enumerate(f):
             line = line.split()
-            print(f"[LINES] {line}")
+            # print(f"[LINES] {line}")
             if len(line) > 0 and line[0] == '*':
                 if mode != 'specific' or (asn_list and [asn for asn in asn_list if (asn in line)]) \
                         or (ap_list and [ap for ap in ap_list if (ap == line[1])]):
@@ -169,7 +169,7 @@ def generate_routes_from_file_handler(f, remove_dup=True, remove_first=False, by
                     else:
                         routes.append(line[start_ind:-1])
                     counter += 1
-                    print(f"[COUNTER] {counter}")
+                    # print(f"[COUNTER] {counter}")
             if mode == 'test' and counter >= test_limit:
                 break
         return routes, counter
