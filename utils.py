@@ -105,3 +105,24 @@ def cal_acc_pres_f1(predicted_scores,true_values , threshold=None):
     plt.title('Confusion Matrix')
     plt.show()
 
+
+def edges_and_relationships_from_dgl_graph(dgl_graph):
+    """
+    Pasandole un grafo DGL, entrega una lista con las tuplas dentro y sus labels correspondientes.
+    """
+    # Obtener las aristas del grafo
+    u, v = dgl_graph.edges()
+
+    # Convertir los tensores a arrays numpy
+    u_np = u.numpy()
+    v_np = v.numpy()
+
+    # Unir las aristas en un array 2D
+    edges_array = np.column_stack((u_np, v_np))
+
+    # Obtener las etiquetas de las aristas (suponiendo que se almacenan en 'Relationships')
+    labels = dgl_graph.edata['Relationship'].numpy()
+
+    # Devolver las aristas y sus etiquetas
+    return edges_array, labels
+
