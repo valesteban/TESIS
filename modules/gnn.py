@@ -36,6 +36,8 @@ class GNN:
       self.train_mask = torch.zeros(number_of_edges, dtype=torch.bool).bernoulli(0.6)
       self.test_mask = ~self.train_mask
 
+      #TODO: investigar usar from sklearn.model_selection import train_test_split  
+
     def remove_ndata(self):
       self.ndata = self.dgl_graph.ndata.pop('feat')
 
