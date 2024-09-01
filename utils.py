@@ -2,7 +2,7 @@
 from sklearn.metrics import roc_curve, roc_auc_score
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix, classification_report
 import seaborn as sns
 
 
@@ -63,10 +63,12 @@ def cal_acc_pres_f1(predicted_scores,true_values , threshold=None):
     Funcion que calcula la precision y accuracy para los casos en que se retorna un unico valor flotante como regresion o
     cuando se retorn un vector con las probabilidades de que sean la clase 2especificadqa por la pposicion del vector
     """
+    print("CALCULO")
     if  threshold is not None:
+      print("IF")
       # Transformamos a 1 | 0 segun el threshold
-      predicted_labels = (predicted_scores > threshold).astype(int)
-      conf_matrix = confusion_matrix(true_values, predicted_labels)
+      predicted_scores = (predicted_scores > threshold).astype(int)
+      conf_matrix = confusion_matrix(true_values, predicted_scores)
 
       # Extrae los valores de TP, TN, FP, FN
       TN, FP, FN, TP = conf_matrix.ravel()
@@ -94,8 +96,12 @@ def cal_acc_pres_f1(predicted_scores,true_values , threshold=None):
       print(f"F1 SCORE {f1}")
 
     else:
-        conf_matrix = confusion_matrix(true_values, predicted_scores)
-
+        print("ELSE")
+        #FIXME: ordenar
+    conf_matrix = confusion_matrix(true_values, predicted_scores)
+    report = classification_report(true_values, predicted_scores, digits=4)
+    print("Classification Report:\n")
+    print(report)   
 
     # Graficar la matriz de confusión
     plt.figure()
