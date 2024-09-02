@@ -154,14 +154,37 @@ class Graph:
         headers = "node_id,feat\n"
         f.write(headers)
 
+        # Crear una lista para almacenar los datos
+        data = []
+
         for node in self.nx_graph.nodes():
             in_degree = self.nx_graph.in_degree(node)
             out_degree = self.nx_graph.out_degree(node)
-            node_features = f"{in_degree}, {out_degree}"
-            # Escribo el nodo y sus características en el archivo
-            f.write(f'{node},"{node_features}"\n')
 
+            # Transformación logarítmica 𝑥 → log(𝑥 + 1).
+            in_degree_log = np.log(in_degree + 1)
+            out_degree_log = np.log(out_degree + 1)
 
+            data.append([node, in_degree_log, out_degree_log])
+
+        # Convertimos la lista en un DataFrame para facilitar la normalización
+        df = pd.DataFrame(data, columns=['node_id', 'in_degree', 'out_degree'])
+        
+        # Normalización Max Abs Scaling
+        max_abs_value = df[['in_degree', 'out_degree']].abs().max().max()
+        df['in_degree'] = df['in_degree'] / max_abs_value
+        df['out_degree'] = df['out_degree'] / max_abs_value
+
+        # Guardar datos normalizados en nodes.csv
+        with open(self.path + "nodes.csv", "w") as f:
+            # Agregamos headers
+            headers = "node_id,feat\n"
+            f.write(headers)
+
+            # Iteramos sobre el DataFrame para escribir los datos
+            for _, row in df.iterrows():
+                node_features = f"{row['in_degree']}, {row['out_degree']}"
+                f.write(f'{row["node_id"]},"{node_features}"\n')
         if self.debug:
             print(f"[SAVE IN: {self.path+'nodes.csv'}]")
            
