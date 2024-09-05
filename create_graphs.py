@@ -102,20 +102,33 @@ from modules.graph import *
 
 # FIXME: No incluir ASN, siempre se va agregar al archivo nodes.csv
 
-LIST_FEATURES_NO_CATEG = [ 'AS_rank_numberAsns', 'AS_rank_numberPrefixes', 'AS_rank_numberAddresses', 'AS_rank_total', 'AS_rank_customer', 
-                 'AS_rank_peer', 'AS_rank_provider', 'peeringDB_ix_count', 'peeringDB_fac_count', 'AS_hegemony', 'cti_top', 'cti_origin']
+LIST_FEATURES_NO_CATEG = [ 'AS_rank_numberAsns', 
+                          'AS_rank_numberPrefixes', 
+                          'AS_rank_numberAddresses', 
+                          'AS_rank_total', 
+                          'AS_rank_customer',
+                          'AS_rank_peer', 
+                          'AS_rank_provider', 
+                          'peeringDB_ix_count', 
+                          'peeringDB_fac_count', 
+                          'AS_hegemony', 
+                          'cti_top', 
+                          'cti_origin']
+LIST_FEATURES_NO_CATEG = ['AS_rank_numberAsns', 'AS_rank_customer', 'peeringDB_fac_count', 'cti_top']
+
 LIST_FEATURES_CATEG = ['AS_rank_continent',
-                        'peeringDB_info_ratio',
-                        'peeringDB_info_scope',
-                        'peeringDB_info_type',
-                        'peeringDB_policy_general'
-                        'ASDB_C1L1']
+                        # 'peeringDB_info_ratio',
+                        # 'peeringDB_info_scope',
+                        # 'peeringDB_info_type',
+                        # 'peeringDB_policy_general'
+                        'ASDB_C1L1'
+                        ]
 
 # CASO 5 --------------------------------------------------------------------------------------
 """ 
     Crear DIGraph con algunos features no todos
 """
-list_feat = LIST_FEATURES_CATEG + LIST_FEATURES_NO_CATEG
+list_feat = LIST_FEATURES_NO_CATEG + LIST_FEATURES_CATEG
 
 # list_feat = LIST_FEATURES_NO_CATEG + LIST_FEATURES_CATEG
 path_dataset = os.getcwd() +  "/datasets/DGL_Graph/MYCODEDiGraph/"  
