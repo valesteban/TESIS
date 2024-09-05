@@ -96,7 +96,7 @@ class Graph:
 
         
 
-    def features_nodes(self,features_filename, list_feat = "all"):
+    def features_nodes(self,features_filename, list_feat = "all", normalize = False):
         """
         Crea archivo nodes.csv con los nodos y sus features.
         Si no se le pasa la lista de features se asumen que se crea con todo
@@ -107,6 +107,7 @@ class Graph:
         
         # Lee el archivo de características
         features = pd.read_csv(features_filename)
+        no_cat_attr = []
 
         # Si se especifica una lista de features, selecciona solo esas columnas
         if list_feat != "all":
@@ -119,10 +120,18 @@ class Graph:
                 # Filtrar columnas que empiezan con el prefijo
                 matched_columns = [col for col in features.columns if col.startswith(prefix)]
                 selected_columns.extend(matched_columns)
-            
+
+                # Agregamos valor no categorico (luego nomrlaizar)
+                if prefix in features.columns:
+                    no_cat_attr.append(prefix)
+                
             # Filtrar el DataFrame para obtener solo columnas seleccionadas
             features = features[selected_columns]
-            
+
+        # Normalizar valores no categoricos
+        if normalize:
+            self.normalize(features,no_cat_attr)
+
         # Crea el archivo nodes.csv
         f = open(self.path + "nodes.csv", "w")
         
@@ -157,7 +166,7 @@ class Graph:
         # Crear una lista para almacenar los datos
         data = []
 
-        for node in self.nx_graph.nodes():
+        for node in self.nx_graph.nodes(): #FIXME: ocupar la funcion normalizar
             in_degree = self.nx_graph.in_degree(node)
             out_degree = self.nx_graph.out_degree(node)
 
@@ -208,6 +217,24 @@ class Graph:
 
         if self.debug:
             print(self.nx_graph)
+
+    def normalize(df,no_cat_attr):
+        """
+        Funcion que se le pasa un DataFrame y normaliza los valores de las columnas que no son categoricas
+        """
+        # Transformación logarítmica 𝑥 → log(𝑥 + 1).
+        df[no_cat_attr] = np.log(df[no_cat_attr] + 1)
+
+        # Normalización Max Abs Scaling
+        for col in no_cat_attr:
+            # Encontramos min y max
+            min_val = df[col].min()
+            max_val = df[col].max()
+            # Evitar división por cero en caso de que min_val == max_val
+            if max_val > min_val:
+                df[col] = (df[col] - min_val) / (max_val - min_val)
+            else:
+                df[col] = 0 # FIXME: Revisar eset caso
 
 TOR_LABELS_DICT = {'P2P':0, 'C2P': 1,'P2C': 2}
 class_names = ['P2P', 'C2P', 'P2C']
