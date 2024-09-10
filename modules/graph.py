@@ -21,7 +21,7 @@ class Graph:
 
     def read_from_relationship_edgelist(self, filename:str,type:str):
         """
-        Crea archivo edges.csv   apartir de dataset CAIDA AS Relationships.
+        Crea archivo edges.csv apartir de dataset CAIDA AS Relationships.
         Lee un grafo desde un archivo de lista de aristas (edgelist) y lo almacena en self.graph.
         
         Parameters:
@@ -58,7 +58,7 @@ class Graph:
                 label = int(line[2])
 
                 # Add Edge
-                tor_dataset.append(np.asarray(line[:2]))                
+                tor_dataset.append(np.asarray(line[:2]))      #seleccionamos los dos primeros elementos de la lista          
 
                 if label == -1: #P2C 
                     # Cambiamos valor label a 1
@@ -83,6 +83,75 @@ class Graph:
         # Creamoss archivo edges.csv
         df_edges.to_csv(self.path+"edges.csv", index=False)
 
+    def label_edgelist(self,filename_caida:str,file_csv:str,type:str):
+        """
+        Crea archivo edges.csv 
+        Etiqueta file_csv con los el file de filename_caida de CAISA AS Relationship.
+        """
+        df_edges_labeless = pd.read_csv(file_csv)
+
+
+        with bz2.open(filename_caida, "rb") as f:
+            data = f.read()
+            lines = data.decode().splitlines()
+
+            tor_dataset = []
+            labels = []
+            
+            for line in lines:
+
+                first_char = line[0]
+
+                if first_char == "#":
+                    continue
+            
+                line = line.split("|")
+
+                # for nx
+                src = int(line[0])
+                dst = int(line[1])
+                label = int(line[2])
+
+                # Add Edge
+                tor_dataset.append(np.asarray(line[:2]))      #seleccionamos los dos primeros elementos de la lista          
+
+                if label == -1: #P2C 
+                    # Cambiamos valor label a 1
+                    labels.append(1)
+
+                    if type == "MultiDiGraph":
+                        # Agregamos relacion C2P 
+                        tor_dataset.append(np.asarray(line[1::-1])) 
+                        labels.append(2)
+                
+                else: # P2P
+                    labels.append(label)
+
+                    if type == "MultiDiGraph":
+                        tor_dataset.append(np.asarray(line[1::-1])) 
+                        labels.append(label)
+        
+        # Creamos DataFrame
+        df_edges = pd.DataFrame(tor_dataset, columns=["src_id", "dst_id"])
+        df_edges['Relationship'] = labels
+
+        # Agrego columna "Relationship" a df_edges_labeless (merge con df_edges)
+        print(f"[Tamaño df_edges_labeless: {df_edges_labeless.shape}]")
+        print(f"[Tamaño df_edges: {df_edges.shape}]")
+        df_edges_labeless = pd.merge(df_edges_labeless, df_edges, on=["src_id", "dst_id"], how="left")
+        print(f"[Tamaño df_edges_labeless: {df_edges_labeless.shape}]")
+
+        # Guardamos archivo edges.csv
+        df_edges_labeless.to_csv(self.path+"edges.csv", index=False)
+
+
+
+
+
+
+        print("Creando archivo edges.csv")
+
+
       
         # Creamos Nx Grafo
         if type == "DiGraph":
@@ -91,7 +160,7 @@ class Graph:
             self.nx_graph = nx.from_pandas_edgelist(df_edges, "src_id", "dst_id", edge_attr=["Relationship"], create_using=nx.MultiDiGraph())
 
         if self.debug == True:
-            print(f"[SAVE : {self.path+"edges.csv"}]")
+            print(f"[SAVE : {self.path+'edges.csv'}]")
             print(self.nx_graph)
 
         
@@ -196,10 +265,11 @@ class Graph:
                 f.write(f'{row["node_id"]},"{node_features}"\n')
         if self.debug:
             print(f"[SAVE IN: {self.path+'nodes.csv'}]")
-           
-
 
     def remove_nodes_degree(self, degree):
+        """
+        Elimina nodos de grado menor o igual a 'degree' del grafo.
+        """
         list_nodes_remove = []
         for node,deg in dict(self.nx_graph.degree()).items():
             if deg <= degree:
@@ -241,3 +311,27 @@ class_names = ['P2P', 'C2P', 'P2C']
 num_classes = len(class_names)
 
 
+import dgl
+path = os.getcwd() + "/datasets/ROUTE_COLLECTORS/graph-2022-06-rrc00-ribs.dgl
+path = os.getcwd() + "/datasets/ROUTE_COLLECTORS/graph-2022-06-rrc00-ribs.dgl"
+# graphs, _ = dgl.load_graphs(path)
+# print(graphs)
+
+# # list_feat = LIST_FEATURES_NO_CATEG + LIST_FEATURES_CATEG
+# path_dataset = os.getcwd() +  "/datasets/DGL_Graph/MYCODEGraphRRC00/"  
+# graph = Graph(path_dataset, debug=True)
+
+# # 1.- Creo topologia dataset y label 
+# type = "DiGraph"  # o "MultiDiGraph"
+# file_path = "datasets/CAIDA_AS_Relationships/Serial_2/20220701.as-rel2.txt.bz2"  # Path archivos Relationships para creacion de topologia y etiquetado
+# graph.read_from_relationship_edgelist(file_path,type)
+
+# # # 2.- Creo archivo nodes.csv con las features de los nodos que se van a aocupar y lo agrego a  dataset_dic de la clase
+# features_filename = "datasets/GNN_INTERNET_DATA/node_features.csv"
+# graph.features_nodes(features_filename,list_feat)
+
+# # 3.- Eliminar nodos de grado 1 hojas
+
+# graph.remove_nodes_degree(1)
+# graph.remove_nodes_degree(1)
+# graph.remove_nodes_degree(1)

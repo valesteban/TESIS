@@ -76,7 +76,7 @@ class GNN:
           print(f"Validation edges: {self.val_mask.sum().item()}")
           print(f"Test edges: {self.test_mask.sum().item()}")
 
-    def split_dataset(self):
+    def split_dataset(self,percentage_train=0.6):
       """
         Divide los edges en tres conjuntos: training, validación y test.
       """
@@ -84,7 +84,7 @@ class GNN:
       number_of_edges = self.dgl_graph.num_edges()
 
       # Crear una máscara para entrenamiento con un 60% de los edges
-      self.train_mask = torch.zeros(number_of_edges, dtype=torch.bool).bernoulli(0.6)
+      self.train_mask = torch.zeros(number_of_edges, dtype=torch.bool).bernoulli(percentage_train)
 
       # De los edges restantes, crear una máscara para validación con un 50% de los edges restantes
       remaining_edges = ~self.train_mask
