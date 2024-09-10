@@ -7,13 +7,7 @@ import os
 import numpy as np
 import pandas as pd
 
-def clean_asn(asn):
-    """
-    Limpia el ASN para eliminar caracteres no numéricos como llaves.
-    """
-    # FIXME: Error que no entiendo pro que pasa Arrgelar
-    return asn.strip('{}')
-
+    
 def download_graph_from_bgpstream(from_time, until_time, collectors, record_type,name_out_file):
 
     # Create an instance of a simple undirected graph
@@ -59,19 +53,13 @@ def download_graph_from_bgpstream(from_time, until_time, collectors, record_type
 
     return dgl_graph_loaded[0], nx_graph
 
-
 def download_graph_create_edges_csv(from_time, until_time, collectors, record_type, name_out_file, directed=False):
-    """
-    Crear archivo edges_X_.csv con la topologia de la red a partir de recolectores.
-    """
     
-    # Crea el archivo nodes.csv
-    f = open(os.getcwd() + "/datasets/DGL_Graph/RouteCollectorsTest/nodes.csv", "w")
 
-    # Agrega los headers
-    headers = "src_id,dst_id,Relationship\n"
-    f.write(headers)
-    f.close()
+    #FIXME: Asegurarse que e sta bien cosntruido , hay un error igual
+    # Define the path for the CSV files
+    base_path = os.getcwd() + "/datasets/ROUTE_COLLECTORS/Downloads/"
+    edges_path = os.path.join(base_path, f"{name_out_file}-edges.csv")
 
     # Creamos una instancia de BGPStream
     stream = pybgpstream.BGPStream(
@@ -80,44 +68,53 @@ def download_graph_create_edges_csv(from_time, until_time, collectors, record_ty
         record_type=record_type,
     )
 
-    list_edges = []
-    seen_edges = set()  # Conjunto para rastrear bordes únicos
-    num_rec = 0
-    for rec in stream.records():
-        if num_rec % 500 == 0:
-            print("Record %d" % num_rec)
-        num_rec += 1
-        for elem in rec:
-            # Get the peer ASn
-            peer = clean_asn(str(elem.peer_asn))
-            # Get the array of ASns in the AS path and remove repeatedly prepended ASns
-            hops = [clean_asn(k) for k, g in groupby(elem.fields['as-path'].split(" "))]
-            if len(hops) > 1 and hops[0] == peer:
-                # Get the origin ASn
-                origin = hops[-1]
-                # Add new edges to the list
-                for i in range(0, len(hops) - 1):
-                    edge1 = (hops[i], hops[i+1])
-                    edge2 = (hops[i+1], hops[i])
-                    
-                    if edge1 not in seen_edges:
-                        list_edges.append(edge1)
-                        seen_edges.add(edge1)
-                    
-                    if not directed and edge2 not in seen_edges:
-                        list_edges.append(edge2)
-                        seen_edges.add(edge2) 
 
-    # Limpieza de los bordes y conversión a DataFrame
-    list_edges = [(clean_asn(src), clean_asn(dst)) for src, dst in list_edges]
-    df_edges = pd.DataFrame(list_edges, columns=["src_id", "dst_id"]) 
-    
-    # Guarda el archivo edges.csv
-    df_edges.to_csv(os.getcwd() + "/datasets/ROUTE_COLLECTORS/" + f"{name_out_file}-edges.csv", index=False)           
+    as_topology = set()
+    rib_entries = 0
+
+    # Process data
+    for elem in stream:
+        rib_entries += 1
+        if rib_entries % 5000 == 0:
+            print("Rib entries processed:", rib_entries)
+        # get the AS path
+        path = elem.fields['as-path']
+        # get the list of ASes in the path
+        ases = path.split(" ")
+        for i in range(0, len(ases)-1):
+            # avoid multiple prepended ASes
+            as_1 = ases[i]
+
+            if "{" in ases[i+1]:
+                as_2 = ases[i+1].strip('{}')
+                as_2 = as_2.split(',')
+                for asn in as_2:
+                    if as_1 != asn:
+                        as_topology.add(tuple(sorted([as_1,asn])))
+            else:
+                as_2 =  ases[i+1] 
+            
+                if ases[i] != ases[i+1]:
+                    as_topology.add(tuple(sorted([as_1,as_2])))
+
+    # Output results
+    print("Processed", rib_entries, "rib entries")
+    print("Found", len(as_topology), "AS adjacencies")
+
+    # Convert the set of AS adjacencies to a DataFrame
+    df_edges = pd.DataFrame(list(as_topology), columns=["src_id", "dst_id"])
+
+    # Save the edges DataFrame to a CSV file
+    df_edges.to_csv(edges_path, index=False)
+    print(f"Edges saved to {edges_path}")
 
     return df_edges
+
 
 # Ejecución de la función
 df = download_graph_create_edges_csv("2022-06-01 00:00:00", "2022-06-01 00:15:00", ["rrc00"], "ribs", "graph-2022-06-rrc00-ribs", directed=False)
 print(df)
 # dgl_graph_loaded, nx_graph = download_graph_from_bgpstream("2022-06-01 00:00:00", "2022-06-01 00:15:00", ["rrc00"], "ribs","graph-2022-06-rrc00-ribs")
+
+
+#TODO: HAcer que se fuardde el grado de transito de cada ASA en un archivo CSV
