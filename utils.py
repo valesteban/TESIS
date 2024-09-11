@@ -72,8 +72,7 @@ def calculate_metrics(predicted_scores,true_values , threshold=None):
 
     conf_matrix = confusion_matrix(true_values, predicted_scores)
     report = classification_report(true_values, predicted_scores, digits=4)
-    print("Classification Report:\n")
-    print(report)   
+     
 
     # Graficar la matriz de confusión
     plt.figure()
@@ -82,7 +81,10 @@ def calculate_metrics(predicted_scores,true_values , threshold=None):
     plt.ylabel('True Labels')
     plt.title('Confusion Matrix')
     plt.show()
-    return predicted_scores
+
+    print("Classification Report:\n")
+    print(report)  
+    
 
 
 def edges_and_relationships_from_dgl_graph(dgl_graph):
