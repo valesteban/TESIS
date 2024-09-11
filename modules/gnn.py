@@ -20,7 +20,16 @@ class GNN:
         self.dgl_graph = dgl.data.CSVDataset(data_path, force_reload=force_reload)[0]
         if self.debug:
             print(self.graph)
-        
+    
+    def load_validation_graph(self,data_path,force_reload=False):
+        self.dgl_val_graph = dgl.data.CSVDataset(data_path, force_reload=force_reload)[0]
+        if self.debug:
+            print(self.validatdgl_val_graph)
+
+    def load_test_graph(self,data_path,force_reload=False):
+        self.dgl_test_graph = dgl.data.CSVDataset(data_path, force_reload=force_reload)[0]
+        if self.debug:
+            print(self.dgl_test_graph)
         
 
       # self.dgl_graph = dgl.data.CSVDataset("drive/MyDrive/TESIS/Datasets/gnn-internet-data/My_data_no_eliminate", force_reload=force_reload)[0]  # TODO: ver/internat hacer esto pero sin elimminar los nodos que no tienen casi degreee

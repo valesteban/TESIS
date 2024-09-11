@@ -21,9 +21,9 @@ def plot_roc_curve(true_labels, predicted_scores):
     fig, ax = plt.subplots(1, 2, figsize=(14, 6))
 
     # true_labels == 1  -> Me entrega una lista con booleanos dependiendo si se cumple o no la condicion
-
     train_pos_score = predicted_scores[true_labels == 1]
     train_neg_score = predicted_scores[true_labels == 0]
+
 
 
     ax[0].hist(train_pos_score, bins=50, alpha=0.5, label='Positive Scores')
@@ -55,49 +55,16 @@ def plot_roc_curve(true_labels, predicted_scores):
     return optimal_threshold
 
 
-
-# Funcion calcular y graficar matriz de confusión
-
-def cal_acc_pres_f1(predicted_scores,true_values , threshold=None):
+def calculate_metrics(predicted_scores,true_values , threshold=None):
     """
     Funcion que calcula la precision y accuracy para los casos en que se retorna un unico valor flotante como regresion o
     cuando se retorn un vector con las probabilidades de que sean la clase 2especificadqa por la pposicion del vector
     """
     print("CALCULO")
     if  threshold is not None:
-      print("IF")
       # Transformamos a 1 | 0 segun el threshold
       predicted_scores = (predicted_scores > threshold).astype(int)
-      conf_matrix = confusion_matrix(true_values, predicted_scores)
 
-      # Extrae los valores de TP, TN, FP, FN
-      TN, FP, FN, TP = conf_matrix.ravel()
-
-
-      # ACCURACY
-      # acc = Numero de predicciones total / Número total de predicciones
-      # acc = (TP + TN) / (TP + TN + FP + FN)
-      acc = (TP + TN) / (TP + TN + FP + FN)
-
-      # PRESICION
-      # pre = TP / (TP + FP)
-      pres = TP / (TP + FP)
-
-      # RECALL
-      # rec = TP / (TP + FN)
-      rec = TP / (TP + FN)
-
-      # F1-SCORE: 2 * (Precision * Recall) / (Precision + Recall)
-      f1 = 2 * (pres * rec) / (pres + rec)
-
-      print(f"ACCURACY {acc}")
-      print(f"PRESICION {pres}")
-      print(f"RECALL {rec}")
-      print(f"F1 SCORE {f1}")
-
-    else:
-        print("ELSE")
-        #FIXME: ordenar
     conf_matrix = confusion_matrix(true_values, predicted_scores)
     report = classification_report(true_values, predicted_scores, digits=4)
     print("Classification Report:\n")
@@ -110,6 +77,7 @@ def cal_acc_pres_f1(predicted_scores,true_values , threshold=None):
     plt.ylabel('True Labels')
     plt.title('Confusion Matrix')
     plt.show()
+    return predicted_scores
 
 
 def edges_and_relationships_from_dgl_graph(dgl_graph):
@@ -136,7 +104,25 @@ def edges_and_relationships_from_dgl_graph(dgl_graph):
 # ENTRENAMIENTO DE LA RED NEURONAL --------------------------------------------------------------------------------
 
 # FUNCIONES PARA PLOTEAR --------------------------------------------------------------------------------
-def plot_training(train_error,acc_train,val_error,acc_val,model_complexity):
+def plot_training(train_error,train_values,val_error,val_values,model_complexity,optimal_threshold=None):
+
+    # Clasificación Binaria
+    if optimal_threshold != None:
+        print("PLOT BINARIO")
+        
+        # Calcular acc durante el entrenaiemto de datos train y validation
+        print("[TRAIN SCORES]",scores_train)
+        print("[VAL SCORES]",val_values)
+
+        scores_train = (train_values > optimal_threshold).astype(int)
+        scores_val = (val_values > optimal_threshold).astype(int)
+        print("[TRAIN SCORES]",scores_train)
+        print("[VAL SCORES]",scores_val)
+        # Calcular la accuracy
+        
+
+
+        pass
 
     # Figura con dos subplots (1 fila, 2 columnas)
     fig, axs = plt.subplots(1, 2, figsize=(16, 6))
