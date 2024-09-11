@@ -132,3 +132,35 @@ def edges_and_relationships_from_dgl_graph(dgl_graph):
     # Devolver las aristas y sus etiquetas
     return edges_array, labels
 
+
+# ENTRENAMIENTO DE LA RED NEURONAL --------------------------------------------------------------------------------
+
+# FUNCIONES PARA PLOTEAR --------------------------------------------------------------------------------
+def plot_training(train_error,acc_train,val_error,acc_val,model_complexity):
+
+    # Figura con dos subplots (1 fila, 2 columnas)
+    fig, axs = plt.subplots(1, 2, figsize=(16, 6))
+
+    # Graficar la accuracy en conjunto de entrenamiento y validación
+    axs[0].plot(acc_train, label='Entrenamiento', color='blue', linewidth=2)
+    axs[0].plot(acc_val, label='Validación', color='orange', linewidth=2)
+    axs[0].set_title('Accuracy del modelo')
+    axs[0].set_ylabel('Precisión')
+    axs[0].set_xlabel('Época')
+    axs[0].legend()
+    axs[0].grid(True)
+
+    # Graficar el error en el conjunto de entrenamiento y validación
+    axs[1].plot(model_complexity, train_error, label='Training Sample', color='cyan', linewidth=2)
+    axs[1].plot(model_complexity, val_error, label='Validation Sample', color='red', linewidth=2)
+    axs[1].set_title('Overfitting')
+    axs[1].set_xlabel('Model Complexity')
+    axs[1].set_ylabel('Prediction Error')
+    axs[1].legend()
+    axs[1].grid(True)
+
+    # Ajustar el espacio entre los subplots
+    plt.tight_layout()
+
+    # Mostrar el gráfico
+    plt.show()
