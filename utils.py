@@ -4,6 +4,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix, classification_report
 import seaborn as sns
+from collections import Counter
+
 
 
 def plot_roc_curve(true_labels, predicted_scores):
@@ -104,32 +106,55 @@ def edges_and_relationships_from_dgl_graph(dgl_graph):
 # ENTRENAMIENTO DE LA RED NEURONAL --------------------------------------------------------------------------------
 
 # FUNCIONES PARA PLOTEAR --------------------------------------------------------------------------------
-def plot_training(train_error,train_values,val_error,val_values,model_complexity,optimal_threshold=None):
+def plot_training(gnn,train_error,training_values,val_error,validation_values,model_complexity,optimal_threshold=None):
+    print("PLOT TRAINING")
+
+
+        
+    labels = gnn.dgl_graph.edata['Relationship'].float()
+    train_mask = gnn.train_mask
+    test_mask = gnn.test_mask
+    val_mask = gnn.val_mask
 
     # Clasificación Binaria
     if optimal_threshold != None:
-        print("PLOT BINARIO")
-        
-        # Calcular acc durante el entrenaiemto de datos train y validation
-        print("[TRAIN SCORES]",scores_train)
-        print("[VAL SCORES]",val_values)
+        # Tensores "desconecte" los gradientes y se convierta en numpy
+        train_predictions_list_epochs = [(tensor > optimal_threshold).detach().numpy().astype(float) for tensor in training_values]
+        val_predictions_list_epoches = [(tensor > optimal_threshold).detach().numpy().astype(float) for tensor in validation_values]
 
-        scores_train = (train_values > optimal_threshold).astype(int)
-        scores_val = (val_values > optimal_threshold).astype(int)
-        print("[TRAIN SCORES]",scores_train)
-        print("[VAL SCORES]",scores_val)
-        # Calcular la accuracy
-        
+        print("[acc_train]",train_predictions_list_epochs)
+        print("[acc_val]",val_predictions_list_epoches)
 
+        accuracy_train_per_epoch = []
+        accuracy_validation_per_epoch = []
 
+        for train_values,val_values in zip(train_predictions_list_epochs,val_predictions_list_epoches):
+    
+            # Etiquetas reales de entrenamiento y validación
+            true_labels_train = labels[train_mask].numpy()  # Convertir a numpy
+            true_labels_val = labels[val_mask].numpy()      # Convertir a numpy
+
+            # Calcular el número de predicciones correctas
+            correct_train = np.sum(train_values == true_labels_train)
+            correct_val = np.sum(val_values == true_labels_val)
+
+            # Calcular la accuracy dividiendo por el número total de predicciones
+            accuracy_train = correct_train / len(true_labels_train)
+            accuracy_val = correct_val / len(true_labels_val)
+
+            # Guardar las accuracies por época
+            accuracy_train_per_epoch.append(accuracy_train)
+            accuracy_validation_per_epoch.append(accuracy_val)
+
+    else:
+        # TODO: Completar!!!
         pass
-
     # Figura con dos subplots (1 fila, 2 columnas)
     fig, axs = plt.subplots(1, 2, figsize=(16, 6))
 
     # Graficar la accuracy en conjunto de entrenamiento y validación
-    axs[0].plot(acc_train, label='Entrenamiento', color='blue', linewidth=2)
-    axs[0].plot(acc_val, label='Validación', color='orange', linewidth=2)
+    axs[0].plot(accuracy_train_per_epoch, label='Entrenamiento', color='blue', linewidth=2)
+    axs[0].plot(accuracy_validation_per_epoch, label='Validación', color='orange', linewidth=2)
     axs[0].set_title('Accuracy del modelo')
     axs[0].set_ylabel('Precisión')
     axs[0].set_xlabel('Época')
