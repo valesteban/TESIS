@@ -61,8 +61,11 @@ def calculate_metrics(predicted_scores,true_values , threshold=None):
     """
     Funcion que calcula la precision y accuracy para los casos en que se retorna un unico valor flotante como regresion o
     cuando se retorn un vector con las probabilidades de que sean la clase 2especificadqa por la pposicion del vector
+    
+    Parameters:
+        - predicted_scores: Lista con valores finales predichos por el modelo para conjunto de entrenamiento.
+        - true_values: Lista con valores reales para el conjunto de entrenamiento.
     """
-    print("CALCULO")
     if  threshold is not None:
       # Transformamos a 1 | 0 segun el threshold
       predicted_scores = (predicted_scores > threshold).astype(int)
