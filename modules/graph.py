@@ -82,6 +82,7 @@ class Graph:
 
         # Creamoss archivo edges.csv
         df_edges.to_csv(self.path+"edges.csv", index=False)
+        self.nx_graph = nx.from_pandas_edgelist(df_edges, "src_id", "dst_id", edge_attr=["Relationship"], create_using=nx.Graph())
 
     def label_edgelist(self,filename_caida:str,file_csv:str,type:str):
         """
@@ -135,29 +136,29 @@ class Graph:
         df_edges = pd.DataFrame(tor_dataset, columns=["src_id", "dst_id"])
         df_edges['Relationship'] = labels
 
+        # Convierte columnas a int64 para asegurar que el merge funcione correctamente
+        df_edges_labeless[['src_id', 'dst_id']] = df_edges_labeless[['src_id', 'dst_id']].astype(int)
+        df_edges[['src_id', 'dst_id']] = df_edges[['src_id', 'dst_id']].astype(int)
+
         # Agrego columna "Relationship" a df_edges_labeless (merge con df_edges)
-        print(f"[Tamaño df_edges_labeless: {df_edges_labeless.shape}]")
-        print(f"[Tamaño df_edges: {df_edges.shape}]")
         df_edges_labeless = pd.merge(df_edges_labeless, df_edges, on=["src_id", "dst_id"], how="left")
         print(f"[Tamaño df_edges_labeless: {df_edges_labeless.shape}]")
 
         # Guardamos archivo edges.csv
         df_edges_labeless.to_csv(self.path+"edges.csv", index=False)
 
-
-
-
-
-
         print("Creando archivo edges.csv")
-
-
       
         # Creamos Nx Grafo
         if type == "DiGraph":
             self.nx_graph = nx.from_pandas_edgelist(df_edges, "src_id", "dst_id", edge_attr=["Relationship"], create_using=nx.DiGraph())
         else: 
             self.nx_graph = nx.from_pandas_edgelist(df_edges, "src_id", "dst_id", edge_attr=["Relationship"], create_using=nx.MultiDiGraph())
+
+
+        # Creamoss archivo edges.csv
+        df_edges.to_csv(self.path+"edges.csv", index=False)
+
 
         if self.debug == True:
             print(f"[SAVE : {self.path+'edges.csv'}]")
@@ -311,9 +312,10 @@ class_names = ['P2P', 'C2P', 'P2C']
 num_classes = len(class_names)
 
 
-import dgl
-path = os.getcwd() + "/datasets/ROUTE_COLLECTORS/graph-2022-06-rrc00-ribs.dgl
-path = os.getcwd() + "/datasets/ROUTE_COLLECTORS/graph-2022-06-rrc00-ribs.dgl"
+# file_csv = os.getcwd()+ "/datasets/ROUTE_COLLECTORS/Downloads/graph-2022-06-rrc00-ribs-edges.csv"
+# filename_caida = os.getcwd()+ "/datasets/CAIDA_AS_Relationships/Serial_2/20220701.as-rel2.txt.bz2"
+# graph = Graph(os.getcwd()+"/datasets/DGL_Graph/MYCODEGraphRRC00/", debug=True)
+# graph.label_edgelist(filename_caida,file_csv,type="DiGraph")
 # graphs, _ = dgl.load_graphs(path)
 # print(graphs)
 
