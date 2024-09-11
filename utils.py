@@ -107,13 +107,23 @@ def edges_and_relationships_from_dgl_graph(dgl_graph):
 
 # FUNCIONES PARA PLOTEAR --------------------------------------------------------------------------------
 def plot_training(gnn,train_error,training_values,val_error,validation_values,model_complexity,optimal_threshold=None):
-    print("PLOT TRAINING")
+    """
+    Grafica el rendimiento del modelo durante el entrenamiento. Generando dos graficos:1) La accuracy de la predicion para los
+    conjuntos de entrenamiento y validación para cada epoch del entrenamiento. a lo largo de las épocas. 2) La Loss para los conjuntos de 
+    entrenamiento y validación.
 
+    Parameters:
+        - gnn: Objeto que contiene el grafo y las máscaras de datos.
+        - train_error: Lista con valores de la Loss para el conjunto de entrenamiento.
+        - training_values: Lista de las predicciones para el conjunto de entrenamiento por epoch.
+        - val_error: Lista con los valores de la Loss para el conjunto de validación.
+        - validation_values: Lista de las predicciones para el conjunto de validación por epoch.
+        - model_complexity: Lista numeración epochs.
+        - optimal_threshold: Umbral para convertir las puntuaciones predichas en etiquetas binarias (opcional). 
+    """
 
-        
     labels = gnn.dgl_graph.edata['Relationship'].float()
     train_mask = gnn.train_mask
-    test_mask = gnn.test_mask
     val_mask = gnn.val_mask
 
     # Clasificación Binaria
@@ -122,9 +132,7 @@ def plot_training(gnn,train_error,training_values,val_error,validation_values,mo
         train_predictions_list_epochs = [(tensor > optimal_threshold).detach().numpy().astype(float) for tensor in training_values]
         val_predictions_list_epoches = [(tensor > optimal_threshold).detach().numpy().astype(float) for tensor in validation_values]
 
-        print("[acc_train]",train_predictions_list_epochs)
-        print("[acc_val]",val_predictions_list_epoches)
-
+        # Listas para guardar las Accuracies por epoch
         accuracy_train_per_epoch = []
         accuracy_validation_per_epoch = []
 
