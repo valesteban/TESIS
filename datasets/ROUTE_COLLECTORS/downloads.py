@@ -111,9 +111,21 @@ def download_graph_create_edges_csv(from_time, until_time, collectors, record_ty
     return df_edges
 
 
-# Ejecución de la función
-df = download_graph_create_edges_csv("2022-06-01 00:00:00", "2022-06-01 00:15:00", ["rrc00"], "ribs", "graph-2022-06-rrc00-ribs", directed=False)
-print(df)
+# DESCAEGAR GRAFO DE BGPSTREAM
+
+# df_2022_06 = download_graph_create_edges_csv("2022-06-01 00:00:00", "2022-06-01 00:15:00", ["rrc00"], "ribs", "graph-2022-06-rrc00-ribs", directed=False)
+# print(df_2022_06)
+
+# df_2021_06 = download_graph_create_edges_csv("2022-04-01 00:00:00", "2022-04-01 00:15:00", ["rrc01"], "ribs", "graph-2022-04-rrc01-ribs", directed=False)
+# print(df_2021_06)
+
+
+# df_2021_03 = download_graph_create_edges_csv("2022-03-01 00:00:00", "2022-03-01 00:15:00", ["rrc03"], "ribs", "graph-2022-03-rrc03-ribs", directed=False)
+# print(df_2021_03)
+
+df_2021_03 = download_graph_create_edges_csv("2021-06-01 00:00:00", "2021-06-01 00:15:00", ["rrc03"], "ribs", "graph-2021-06-rrc03-ribs", directed=False)
+print(df_2021_03)
+
 # dgl_graph_loaded, nx_graph = download_graph_from_bgpstream("2022-06-01 00:00:00", "2022-06-01 00:15:00", ["rrc00"], "ribs","graph-2022-06-rrc00-ribs")
 
 
