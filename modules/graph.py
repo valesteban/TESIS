@@ -82,8 +82,12 @@ class Graph:
 
         # Creamoss archivo edges.csv
         df_edges.to_csv(self.path+"edges.csv", index=False)
-        self.nx_graph = nx.from_pandas_edgelist(df_edges, "src_id", "dst_id", edge_attr=["Relationship"], create_using=nx.Graph())
-
+        if type == "DiGraph":
+            self.nx_graph = nx.from_pandas_edgelist(df_edges, "src_id", "dst_id", edge_attr=["Relationship"], create_using=nx.DiGraph())
+        elif type == "MultiDiGraph":
+            self.nx_graph = nx.from_pandas_edgelist(df_edges, "src_id", "dst_id", edge_attr=["Relationship"], create_using=nx.MultiDiGraph())
+        else:
+            self.nx_graph = nx.from_pandas_edgelist(df_edges, "src_id", "dst_id", edge_attr=["Relationship"], create_using=nx.Graph())
     def label_edgelist(self,filename_caida:str,file_csv:str,type:str):
         """
         Crea archivo edges.csv 
@@ -307,33 +311,7 @@ class Graph:
             else:
                 df[col] = 0 # FIXME: Revisar eset caso
 
+
 TOR_LABELS_DICT = {'P2P':0, 'C2P': 1,'P2C': 2}
 class_names = ['P2P', 'C2P', 'P2C']
 num_classes = len(class_names)
-
-
-# file_csv = os.getcwd()+ "/datasets/ROUTE_COLLECTORS/Downloads/graph-2022-06-rrc00-ribs-edges.csv"
-# filename_caida = os.getcwd()+ "/datasets/CAIDA_AS_Relationships/Serial_2/20220701.as-rel2.txt.bz2"
-# graph = Graph(os.getcwd()+"/datasets/DGL_Graph/MYCODEGraphRRC00/", debug=True)
-# graph.label_edgelist(filename_caida,file_csv,type="DiGraph")
-# graphs, _ = dgl.load_graphs(path)
-# print(graphs)
-
-# # list_feat = LIST_FEATURES_NO_CATEG + LIST_FEATURES_CATEG
-# path_dataset = os.getcwd() +  "/datasets/DGL_Graph/MYCODEGraphRRC00/"  
-# graph = Graph(path_dataset, debug=True)
-
-# # 1.- Creo topologia dataset y label 
-# type = "DiGraph"  # o "MultiDiGraph"
-# file_path = "datasets/CAIDA_AS_Relationships/Serial_2/20220701.as-rel2.txt.bz2"  # Path archivos Relationships para creacion de topologia y etiquetado
-# graph.read_from_relationship_edgelist(file_path,type)
-
-# # # 2.- Creo archivo nodes.csv con las features de los nodos que se van a aocupar y lo agrego a  dataset_dic de la clase
-# features_filename = "datasets/GNN_INTERNET_DATA/node_features.csv"
-# graph.features_nodes(features_filename,list_feat)
-
-# # 3.- Eliminar nodos de grado 1 hojas
-
-# graph.remove_nodes_degree(1)
-# graph.remove_nodes_degree(1)
-# graph.remove_nodes_degree(1)
