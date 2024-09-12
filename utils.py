@@ -111,7 +111,7 @@ def edges_and_relationships_from_dgl_graph(dgl_graph):
 # ENTRENAMIENTO DE LA RED NEURONAL --------------------------------------------------------------------------------
 
 # FUNCIONES PARA PLOTEAR --------------------------------------------------------------------------------
-def plot_training(gnn,train_error,training_values,val_error,validation_values,model_complexity,optimal_threshold=None):
+def plot_training(gnn,train_error,training_values_acc,val_error,validation_values_acc,model_complexity,optimal_threshold=None):
     """
     Grafica el rendimiento del modelo durante el entrenamiento. Generando dos graficos:1) La accuracy de la predicion para los
     conjuntos de entrenamiento y validación para cada epoch del entrenamiento. a lo largo de las épocas. 2) La Loss para los conjuntos de 
@@ -134,8 +134,8 @@ def plot_training(gnn,train_error,training_values,val_error,validation_values,mo
     # Clasificación Binaria
     if optimal_threshold != None:
         # Tensores "desconecte" los gradientes y se convierta en numpy
-        train_predictions_list_epochs = [(tensor > optimal_threshold).detach().numpy().astype(float) for tensor in training_values]
-        val_predictions_list_epoches = [(tensor > optimal_threshold).detach().numpy().astype(float) for tensor in validation_values]
+        train_predictions_list_epochs = [(tensor > optimal_threshold).detach().numpy().astype(float) for tensor in training_values_acc]
+        val_predictions_list_epoches = [(tensor > optimal_threshold).detach().numpy().astype(float) for tensor in validation_values_acc]
 
         # Listas para guardar las Accuracies por epoch
         accuracy_train_per_epoch = []
@@ -161,6 +161,10 @@ def plot_training(gnn,train_error,training_values,val_error,validation_values,mo
 
     else:
         # TODO: Completar!!!
+        accuracy_train_per_epoch = training_values_acc
+        accuracy_validation_per_epoch = validation_values_acc
+        # # print("[TRAINING VALUES]",training_values)
+        # print("[VALIDATION VALUES]",validation_values_acc)
         pass
     # Figura con dos subplots (1 fila, 2 columnas)
     fig, axs = plt.subplots(1, 2, figsize=(16, 6))
