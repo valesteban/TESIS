@@ -150,28 +150,28 @@ from modules.graph import *
 # graph.remove_nodes_degree(1)
 
 
-# CASO 6 -------------------------------------------------------------------------------------------------------
-# Creamos grafo a partir de BGPSTREAM
+# # CASO 6 -------------------------------------------------------------------------------------------------------
+# # Creamos grafo a partir de BGPSTREAM
 
-# Crear Archivos nodes.csv y edges.csv
+# # Crear Archivos nodes.csv y edges.csv
 
-# Etiquetar edges.csv con CAIDA AS Relationships
-file_csv = os.getcwd()+ "/datasets/ROUTE_COLLECTORS/Downloads/graph-2021-06-rrc00-ribs-edges.csv"
-filename_caida = os.getcwd()+ "/datasets/CAIDA_AS_Relationships/Serial_2/20210701.as-rel2.txt.bz2"
-graph = Graph(os.getcwd()+"/datasets/DGL_Graph/MYCODEGraphRRC02/", debug=True)
-graph.label_edgelist(filename_caida,file_csv,type="DiGraph")
+# # Etiquetar edges.csv con CAIDA AS Relationships
+# file_csv = os.getcwd()+ "/datasets/ROUTE_COLLECTORS/Downloads/graph-2021-06-rrc00-ribs-edges.csv"
+# filename_caida = os.getcwd()+ "/datasets/CAIDA_AS_Relationships/Serial_2/20210701.as-rel2.txt.bz2"
+# graph = Graph(os.getcwd()+"/datasets/DGL_Graph/MYCODEGraphRRC02/", debug=True)
+# graph.label_edgelist(filename_caida,file_csv,type="DiGraph")
 
-# Agregar atributos para cada AS
-# 2.- Creo archivo nodes.csv con las features de los nodos que se van a aocupar y lo agrego a  dataset_dic de la clase
-features_filename = "datasets/GNN_INTERNET_DATA/node_features.csv"
-graph.features_nodes(features_filename,list_feat="all")
+# # Agregar atributos para cada AS
+# # 2.- Creo archivo nodes.csv con las features de los nodos que se van a aocupar y lo agrego a  dataset_dic de la clase
+# features_filename = "datasets/GNN_INTERNET_DATA/node_features.csv"
+# graph.features_nodes(features_filename,list_feat="all")
 
-# 3.- Eliminar nodos de grado 1 hojas
+# # 3.- Eliminar nodos de grado 1 hojas
 
-graph.remove_nodes_degree(1)
-graph.remove_nodes_degree(1)
-graph.remove_nodes_degree(1)
+# graph.remove_nodes_degree(1)
+# graph.remove_nodes_degree(1)
+# graph.remove_nodes_degree(1)
 
 
-# -------------------------------------------------------------------------------------------------------
-# FIXME: Para GRaphSAGE los features deben ser de tipo float. ARREGLAR - gnn.dgl_graph.ndata['feat'] = gnn.dgl_graph.ndata['feat'].float()
+# # -------------------------------------------------------------------------------------------------------
+# # FIXME: Para GRaphSAGE los features deben ser de tipo float. ARREGLAR - gnn.dgl_graph.ndata['feat'] = gnn.dgl_graph.ndata['feat'].float()

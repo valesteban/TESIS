@@ -88,15 +88,16 @@ class Graph:
             self.nx_graph = nx.from_pandas_edgelist(df_edges, "src_id", "dst_id", edge_attr=["Relationship"], create_using=nx.MultiDiGraph())
         else:
             self.nx_graph = nx.from_pandas_edgelist(df_edges, "src_id", "dst_id", edge_attr=["Relationship"], create_using=nx.Graph())
-    def label_edgelist(self,filename_caida:str,file_csv:str,type:str):
+    
+    def label_edgelist(self,labeled_caida_data_file:str,edge_list_source_file_csv:str,type:str,filename_out="edges.csv"):
         """
         Crea archivo edges.csv 
-        Etiqueta file_csv con los el file de filename_caida de CAISA AS Relationship.
+        MYCODEEtiqueta file_csv con los el file de filename_caida de CAISA AS Relationship.
         """
-        df_edges_labeless = pd.read_csv(file_csv)
+        df_edges_labeless = pd.read_csv(edge_list_source_file_csv)
 
 
-        with bz2.open(filename_caida, "rb") as f:
+        with bz2.open(labeled_caida_data_file, "rb") as f:
             data = f.read()
             lines = data.decode().splitlines()
 
@@ -149,28 +150,30 @@ class Graph:
         print(f"[Tamaño df_edges_labeless: {df_edges_labeless.shape}]")
 
         # Guardamos archivo edges.csv
-        df_edges_labeless.to_csv(self.path+"edges.csv", index=False)
+        df_edges_labeless.to_csv(self.path+filename_out, index=False)
 
         print("Creando archivo edges.csv")
       
-        # Creamos Nx Grafo
+        # Creamoss archivo edges.csv
         if type == "DiGraph":
             self.nx_graph = nx.from_pandas_edgelist(df_edges, "src_id", "dst_id", edge_attr=["Relationship"], create_using=nx.DiGraph())
-        else: 
+        elif type == "MultiDiGraph":
             self.nx_graph = nx.from_pandas_edgelist(df_edges, "src_id", "dst_id", edge_attr=["Relationship"], create_using=nx.MultiDiGraph())
-
+        else:
+            self.nx_graph = nx.from_pandas_edgelist(df_edges, "src_id", "dst_id", edge_attr=["Relationship"], create_using=nx.Graph())
+    
 
         # Creamoss archivo edges.csv
-        df_edges.to_csv(self.path+"edges.csv", index=False)
+        df_edges.to_csv(self.path+filename_out, index=False)
 
 
         if self.debug == True:
-            print(f"[SAVE : {self.path+'edges.csv'}]")
+            print(f"[SAVE : {self.path+filename_out}]")
             print(self.nx_graph)
 
         
 
-    def features_nodes(self,features_filename, list_feat = "all", normalize = False):
+    def features_nodes(self,features_filename, list_feat = "all", normalize = False,filename_out="nodes.csv"):
         """
         Crea archivo nodes.csv con los nodos y sus features.
         Si no se le pasa la lista de features se asumen que se crea con todo
@@ -207,7 +210,7 @@ class Graph:
             self.normalize(features,no_cat_attr)
 
         # Crea el archivo nodes.csv
-        f = open(self.path + "nodes.csv", "w")
+        f = open(self.path + filename_out, "w")
         
         # Agrega los headers
         headers = "node_id,feat\n"
@@ -223,7 +226,7 @@ class Graph:
         
         f.close()
 
-    def only_degree_features_nodes(self, features_filename):
+    def only_degree_features_nodes(self, features_filename,filename_out="nodes.csv"):
         """
         Crea archivo nodes.csv el cual consiste en node_id y feats lo que consiste en degree_node_in y degree_node_out
         """
@@ -231,7 +234,7 @@ class Graph:
         features = pd.read_csv(features_filename)
 
         # Creo archivo
-        f = open(self.path + "nodes.csv","w")
+        f = open(self.path + filename_out,"w")
         
         # Agregamos headers
         headers = "node_id,feat\n"
@@ -259,7 +262,7 @@ class Graph:
         df['out_degree'] = df['out_degree'] / max_abs_value
 
         # Guardar datos normalizados en nodes.csv
-        with open(self.path + "nodes.csv", "w") as f:
+        with open(self.path + filename_out, "w") as f:
             # Agregamos headers
             headers = "node_id,feat\n"
             f.write(headers)
@@ -271,7 +274,7 @@ class Graph:
         if self.debug:
             print(f"[SAVE IN: {self.path+'nodes.csv'}]")
 
-    def remove_nodes_degree(self, degree):
+    def remove_nodes_degree(self, degree,filename_out="edges.csv"):
         """
         Elimina nodos de grado menor o igual a 'degree' del grafo.
         """
@@ -288,7 +291,7 @@ class Graph:
             [(u, v, data['Relationship']) for u, v, data in edge_list],
             columns=['src_id', 'dst_id', 'Relationship']
         )
-        df_edges.to_csv(self.path + "edges.csv", index=False)
+        df_edges.to_csv(self.path + filename_out, index=False)
 
         if self.debug:
             print(self.nx_graph)

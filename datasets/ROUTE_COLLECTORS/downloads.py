@@ -14,7 +14,7 @@ def download_graph_from_bgpstream(from_time, until_time, collectors, record_type
     nx_graph = nx.Graph()
 
     bgp_lens = defaultdict(lambda: defaultdict(lambda: None))
-
+    print("[COLLECTOR]", collectors)
     stream = pybgpstream.BGPStream(
         # Consider this time interval:
         # Sat, 01 Aug 2015 7:50:00 GMT -  08:10:00 GMT
@@ -61,6 +61,7 @@ def download_graph_create_edges_csv(from_time, until_time, collectors, record_ty
     base_path = os.getcwd() + "/datasets/ROUTE_COLLECTORS/Downloads/"
     edges_path = os.path.join(base_path, f"{name_out_file}-edges.csv")
 
+    print("[COLLECTORS]", collectors)
     # Creamos una instancia de BGPStream
     stream = pybgpstream.BGPStream(
         from_time=from_time, until_time=until_time,
