@@ -17,9 +17,9 @@ class GNN:
         
     def load_dataset(self, data_path, force_reload=False):
     
-        self.dgl_graph = dgl.data.CSVDataset(data_path, force_reload=force_reload)
+        self.dgl_graph = dgl.data.CSVDataset(data_path, force_reload=force_reload)[0]
         if self.debug:
-            print(self.graph)
+            print(self.dgl_graph)
 
     def split_dtaset_v2(self):
       """
