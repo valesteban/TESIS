@@ -1,2 +1,5 @@
-datasets/RouteViews/Downloads/
-bgp2vec2/
+/datasets/ROUTE_COLLECTORS/Downloads/
+/datasets/GNN_INTERNET_DATA/DGL_GRAPH/
+/datasets/DGL_Graph/
+/datasets/CAIDA_AS_Relationships/Serial_1/
+/datasets/CAIDA_AS_Relationships/Serial_2/
