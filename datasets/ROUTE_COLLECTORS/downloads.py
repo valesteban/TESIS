@@ -59,7 +59,9 @@ def download_graph_create_edges_csv(from_time, until_time, collectors, record_ty
     #FIXME: Asegurarse que e sta bien cosntruido , hay un error igual
     # Define the path for the CSV files
     base_path = os.getcwd() + "/datasets/ROUTE_COLLECTORS/Downloads/"
+    
     edges_path = os.path.join(base_path, f"{name_out_file}-edges.csv")
+    print("[EDGES PATH]", edges_path)
 
     print("[COLLECTORS]", collectors)
     # Creamos una instancia de BGPStream
@@ -76,7 +78,7 @@ def download_graph_create_edges_csv(from_time, until_time, collectors, record_ty
     # Process data
     for elem in stream:
         rib_entries += 1
-        if rib_entries % 5000 == 0:
+        if rib_entries % 50000 == 0:
             print("Rib entries processed:", rib_entries)
         # get the AS path
         path = elem.fields['as-path']
@@ -124,8 +126,18 @@ def download_graph_create_edges_csv(from_time, until_time, collectors, record_ty
 # df_2021_03 = download_graph_create_edges_csv("2022-03-01 00:00:00", "2022-03-01 00:15:00", ["rrc03"], "ribs", "graph-2022-03-rrc03-ribs", directed=False)
 # print(df_2021_03)
 
-df_2021_03 = download_graph_create_edges_csv("2021-06-01 00:00:00", "2021-06-01 00:15:00", ["rrc03"], "ribs", "graph-2021-06-rrc03-ribs", directed=False)
+df_2021_03 = download_graph_create_edges_csv("2021-01-01 00:00:00", "2021-01-01 00:15:00", ["rrc01"], "ribs", "graph-2021-01-rrc01-ribs", directed=False)
 print(df_2021_03)
+# df_2021_03 = download_graph_create_edges_csv("2021-01-01 00:00:00", "2021-01-01 00:15:00", ["rrc15"], "ribs", "graph-2021-01-rrc15-ribs", directed=False)
+# print(df_2021_03)
+# df_2021_03 = download_graph_create_edges_csv("2021-01-01 00:00:00", "2021-01-01 00:15:00", ["rrc23"], "ribs", "graph-2021-01-rrc23-ribs", directed=False)
+# print(df_2021_03)
+# df_2021_03 = download_graph_create_edges_csv("2021-01-01 00:00:00", "2021-01-01 00:15:00", ["rrc23"], "ribs", "graph-2021-01-rrc23-ribs", directed=False)
+# print(df_2021_03)
+# df_2021_03 = download_graph_create_edges_csv("2020-01-01 00:00:00", "2020-01-01 00:15:00", ["rrc01"], "ribs", "graph-2020-01-rrc01-ribs", directed=False)
+# print(df_2021_03)
+# df_2021_03 = download_graph_create_edges_csv("2020-01-01 00:00:00", "2020-01-01 00:15:00", ["rrc15"], "ribs", "graph-2020-01-rrc15-ribs", directed=False)
+# print(df_2021_03)
 
 # dgl_graph_loaded, nx_graph = download_graph_from_bgpstream("2022-06-01 00:00:00", "2022-06-01 00:15:00", ["rrc00"], "ribs","graph-2022-06-rrc00-ribs")
 
