@@ -37,9 +37,11 @@ class Graph_API(Graph):
                 }
                 }
             """% (asn_list[0],asn_list[1],date)
-        request = requests.get(self.URL, json={'query': query})
+    
+        request = requests.post(self.URL, json={'query': query})
+        
         if request.status_code != 200:
-            print ("Query failed to run returned code of %d " % (request.status_code))
+            return None
 
         return request.json()
 
@@ -78,9 +80,10 @@ class Graph_API(Graph):
             }
             }"""% (asn,date,date)
 
-        request = requests.get(self.URL, json={'query': query})
+        request = requests.post(self.URL, json={'query': query})
+    
         if request.status_code != 200:
-            print ("Query failed to run returned code of %d " % (request.status_code))
+            return None
 
         return request.json()
         
@@ -96,6 +99,7 @@ class Graph_API(Graph):
         # Crea el archivo nodes.csv
         f = open(self.path + filename_out, "w")
         print("[PATH]",self.path +filename_out)
+        
         # Agrega los headers
         headers = "node_id,feat\n"
         f.write(headers)
@@ -108,13 +112,20 @@ class Graph_API(Graph):
             if i % 500 == 0:
                 print(f"Node {i} of {length_graph} processed")
             # Filtra las filas correspondientes al nodo y obtiene los features seleccionados
-            json_resp_info = self.AsnQuery( asn_node,self.date)["data"]["asns"]["edges"][0]["node"]
+            json_resp_info = self.AsnQuery( asn_node,self.date)["data"]["asns"]["edges"]
+    
+            if len(json_resp_info) == 0:
+                #FIXME: ver si poner etiwqueta por defecto u otro o eliminar?   
+                continue
+
+            json_resp_info = json_resp_info[0]["node"]
+
             asn_rank = json_resp_info["rank"]
             cone_numberAsns = json_resp_info["cone"]["numberAsns"]
             cone_numberPrefixes = json_resp_info["cone"]["numberPrefixes"]
             cone_numberAddresses = json_resp_info["cone"]["numberAddresses"]
             #COUNTRY
-            # country_iso = json_resp_info["country"]["iso"]
+            # country_iso = json_resp_info["country"]["iso"] TODO: ver si se agrega
             as_degree_transit = json_resp_info["asnDegree"]["transit"]
             as_degree_total = json_resp_info["asnDegree"]["total"]
 
@@ -124,29 +135,59 @@ class Graph_API(Graph):
             f.write(w)
         
         f.close()
+    
 
-def label_edgelist(self, edge_list_source_file_csv, type="DiGraph", filename_out="edges.csv"):
+    def label_edgelist(self, edge_list_source_file_csv, type="DiGraph", filename_out="edges.csv",binary=True):
         # Leer el archivo CSV
         df_edges = pd.read_csv(edge_list_source_file_csv, sep=',', header=None, names=['src', 'dst'])
+        print(f"[NUMERO FILAS] {len(df_edges)}")
 
         # Agregar una columna para las etiquetas de relación
         df_edges['relationship_label'] = None
 
+        edges_not_found = 0
+        indices_to_remove = []
+
         # Iterar sobre las filas del DataFrame
-        for row in df_edges.itertuples():
+        for i,row in enumerate(df_edges.itertuples()):
+            # Saltamos la primera fila (encabezado)
+            if i == 0:
+                continue
+  
             # Obtener el valor de 'relationship' para cada par de nodos
             response = self.AsnListQuery([row.src, row.dst], self.date)
-            relationship = response.get("data", {}).get("asnLink", {}).get("relationship", "")
+            if response == None:
+                #FIXME: ver si poner etiwqueta por defecto u otro o eliminar?
+                print(f"Error: No se pudo obtener la relación entre {row.src} y {row.dst}- {i}")
+                indices_to_remove.append(row.Index)
+                edges_not_found += 1
+                continue
 
-            # Asignar la etiqueta basada en la relación
-            if relationship == "provider":
-                df_edges.at[row.Index, 'relationship_label'] = 0
-            elif relationship == "peer":
-                df_edges.at[row.Index, 'relationship_label'] = 1
-            elif relationship == "customer":
-                df_edges.at[row.Index, 'relationship_label'] = 2
+            relationship = response.get("data", {}).get("asnLink", {})
+            
+            if relationship == None:
+                print(f"Error: No se pudo obtener la relación entre {row.src} y {row.dst}- {i}")
+                #TODO : eliminar la relacion 
+                edges_not_found += 1
+                indices_to_remove.append(row.Index)
+                continue
             else:
-                df_edges.at[row.Index, 'relationship_label'] = 3  # Valor por defecto si no coincide con las opciones
+                relationship = relationship.get("relationship", "")
+
+            
+            
+            # Asignar la etiqueta basada en la relación
+            if relationship == "provider" and not binary:
+                df_edges.at[row.Index, 'relationship_label'] = 2
+            elif relationship == "provider" and binary:
+                df_edges.at[row.Index, 'relationship_label'] = 1
+            elif relationship == "peer":
+                df_edges.at[row.Index, 'relationship_label'] = 0
+            elif relationship == "customer":
+                df_edges.at[row.Index, 'relationship_label'] = 1
+
+        # Eliminamos filas con índices para eliminar (relación no encontrada)
+        df_edges = df_edges.drop(index=indices_to_remove) 
 
         # Crear el grafo usando NetworkX
         if type == "DiGraph":
@@ -158,6 +199,7 @@ def label_edgelist(self, edge_list_source_file_csv, type="DiGraph", filename_out
 
         # Guardar el DataFrame con la nueva columna en un archivo CSV
         df_edges.to_csv(self.path + filename_out, index=False)
+        print(f"[CSV FILE] {self.path + filename_out}")
 
 def normalize_features(self,input_file="nodes.csv",output_file="nodes.csv"):
     # Leer el archivo CSV
@@ -179,14 +221,32 @@ def normalize_features(self,input_file="nodes.csv",output_file="nodes.csv"):
     for col in feat_columns.columns:
         min_val = df[col].min()
         max_val = df[col].max()
-        # Evitar división por cero en caso de que min_val == max_val
+        # Evitar división por cero 
         if max_val > min_val:
             df[col] = (df[col] - min_val) / (max_val - min_val)
         else:
-            df[col] = 0  # Si min_val == max_val, todos los valores en esa columna son iguales
+            df[col] = 0  # FIXME: ver correcto control
 
-    # Mostrar el DataFrame normalizado
     print(df)
 
-    # Opcionalmente, guardar el DataFrame normalizado en un nuevo archivo CSV
-    df.to_csv(self.path + "normalized_nodes.csv", index=False)
+    df.to_csv(self.path + "nodes.csv", index=False)
+
+    def filter_edges_with_attributes(self,nodes_file="nodes.csv", edges_file="edges.csv", output_file="edges.csv"):
+        # Cargar el archivo de nodos con atributos
+        nodes_df = pd.read_csv(self.path +nodes_file)
+        
+        # Extraer los node_id con atributos
+        nodes_with_attributes = set(nodes_df["node_id"].astype(str))
+        
+        # Cargar el archivo de aristas (edges)
+        edges_df = pd.read_csv(self.path +edges_file)
+        
+        # Filtrar las aristas cuyos nodos fuente y destino están en nodes_with_attributes
+        filtered_edges_df = edges_df[
+            edges_df["src_id"].astype(str).isin(nodes_with_attributes) &
+            edges_df["dst_id"].astype(str).isin(nodes_with_attributes)
+        ]
+        
+        # Guardar las aristas filtradas en un nuevo archivo CSV
+        filtered_edges_df.to_csv(self.path +output_file, index=False)
+        print(f"Archivo de aristas filtrado guardado en: {output_file}")
