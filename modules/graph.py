@@ -4,6 +4,12 @@ import numpy as  np
 from random import sample
 import os
 import bz2
+import re
+import argparse
+import sys
+import json
+import requests
+
 
 class Graph:
     def __init__(self,path, debug = False):
@@ -19,7 +25,7 @@ class Graph:
 
         self.path = path
 
-    def read_from_relationship_edgelist(self, filename:str,type:str):
+    def read_from_relationship_edgelist(self, filename:str,type:str,out_file="edges.csv"):
         """
         Crea archivo edges.csv apartir de dataset CAIDA AS Relationships.
         Lee un grafo desde un archivo de lista de aristas (edgelist) y lo almacena en self.graph.
@@ -140,14 +146,15 @@ class Graph:
         # Creamos DataFrame
         df_edges = pd.DataFrame(tor_dataset, columns=["src_id", "dst_id"])
         df_edges['Relationship'] = labels
+        print(f"[Tamaño df_edges: {df_edges.shape}]")
 
         # Convierte columnas a int64 para asegurar que el merge funcione correctamente
         df_edges_labeless[['src_id', 'dst_id']] = df_edges_labeless[['src_id', 'dst_id']].astype(int)
         df_edges[['src_id', 'dst_id']] = df_edges[['src_id', 'dst_id']].astype(int)
+        print(f"[Tamaño df_edges_labeless: {df_edges_labeless.shape}]")
 
         # Agrego columna "Relationship" a df_edges_labeless (merge con df_edges)
         df_edges_labeless = pd.merge(df_edges_labeless, df_edges, on=["src_id", "dst_id"], how="left")
-        print(f"[Tamaño df_edges_labeless: {df_edges_labeless.shape}]")
 
         # Guardamos archivo edges.csv
         df_edges_labeless.to_csv(self.path+filename_out, index=False)
@@ -156,21 +163,16 @@ class Graph:
       
         # Creamoss archivo edges.csv
         if type == "DiGraph":
-            self.nx_graph = nx.from_pandas_edgelist(df_edges, "src_id", "dst_id", edge_attr=["Relationship"], create_using=nx.DiGraph())
+            self.nx_graph = nx.from_pandas_edgelist(df_edges_labeless, "src_id", "dst_id", edge_attr=["Relationship"], create_using=nx.DiGraph())
         elif type == "MultiDiGraph":
-            self.nx_graph = nx.from_pandas_edgelist(df_edges, "src_id", "dst_id", edge_attr=["Relationship"], create_using=nx.MultiDiGraph())
+            self.nx_graph = nx.from_pandas_edgelist(df_edges_labeless, "src_id", "dst_id", edge_attr=["Relationship"], create_using=nx.MultiDiGraph())
         else:
-            self.nx_graph = nx.from_pandas_edgelist(df_edges, "src_id", "dst_id", edge_attr=["Relationship"], create_using=nx.Graph())
+            self.nx_graph = nx.from_pandas_edgelist(df_edges_labeless, "src_id", "dst_id", edge_attr=["Relationship"], create_using=nx.Graph())
     
-
-        # Creamoss archivo edges.csv
-        df_edges.to_csv(self.path+filename_out, index=False)
-
-
-        if self.debug == True:
-            print(f"[SAVE : {self.path+filename_out}]")
-            print(self.nx_graph)
-
+        if self.debug:
+            print(f"[Tamaño Data Frame Merge]: {df_edges_labeless.shape}")
+            print(f"[Grafo NX]: {self.nx_graph}")
+            print(f"[SAVE IN]: {self.path+filename_out}")
         
 
     def features_nodes(self,features_filename, list_feat = "all", normalize = False,filename_out="nodes.csv"):
@@ -273,6 +275,28 @@ class Graph:
                 f.write(f'{row["node_id"]},"{node_features}"\n')
         if self.debug:
             print(f"[SAVE IN: {self.path+'nodes.csv'}]")
+
+    def add_prefixes_count(self,asn):
+        """
+        De la API RIPEstat se obtiene la cantidad de prefijos que anuncia cada ASN.
+        """
+        # Hacer una petición GET a una URL
+        starttime = "2008-01-01T00:00:00"
+        response = requests.get(f"/data/prefix-count/data.json?resource=AS{asn}&starttime={starttime}")
+        data = {
+            "starttime": "2021-01-01T00:00:00",
+            "endtime": "2021-02-01T00:00:00",
+        }
+        # Imprimir el código de estado y el contenido de la respuesta
+        print(response.status_code)  # Código de estado (200 significa éxito)
+        print(response.json()) 
+
+
+         
+
+
+
+
 
     def remove_nodes_degree(self, degree,filename_out="edges.csv"):
         """
