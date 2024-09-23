@@ -5,7 +5,7 @@
     titulo: "EXPLORANDO EL POTENCIAL DE LAS REDES NEURONALES DE GRAFOS PARA EXTRAER INFORMACIÓN DE BGP",
     autor: "VALENTINA FRANCISCA ESTEBAN LAGOS",
     profe: "IVANA BACHMANN ESPINOZA",
-    profe: "SEBANSTIÁN FERRADA",
+    profe2: "SEBASTIÁN FERRADA",
 )
 
 // Resumen
@@ -57,12 +57,26 @@
 // Inicio documento
 
 // Capitulo 1: Introducción
-#include "capitulos/1-introduccion.typ"
+#include "capitulos/1-Introduccion.typ"
 #pagebreak()
 
-// Capitulo 2: Background/Estado del arte
-#include "capitulos/2-estadoDelArte.typ"
+// Capitulo 3: Marco Teórico
+#include "capitulos/2-MarcoTeorico.typ"
 #pagebreak()
+
+// Capitulo 3: Datos
+#include "capitulos/3-Datos.typ"
+#pagebreak()
+
+// Capitulo 4: Experimentos
+#include "capitulos/4-Experimentos.typ"
+
+// Capitulo 5: Resultados y Analisis
+#include "capitulos/5-Analisis.typ"
+
+// Capitulo 2: Background/Estado del arte
+//#include "capitulos/2-estadoDelArte.typ"
+//#pagebreak()
 
 
 #figure(

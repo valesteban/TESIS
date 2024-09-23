@@ -7,6 +7,8 @@
     titulo: none,
     autor: none,
     profe: none,
+    profe2: none,
+
     doc,
 ) = {
     // Formato de página
@@ -52,6 +54,7 @@
     let _nombre_comision = [NOMBRE UNO \ NOMBRE DOS \ NOMBRE TRES]
 
     let _guia = "PROFESORA GUÍA:"
+    let _coguia = "PROFESOR CO-GUÍA:"
     let _comision = "MIEMBROS DE LA COMISIÓN:"
 
     let _ciudad = "SANTIAGO DE CHILE"
@@ -69,6 +72,7 @@
             autor,
             1.5fr,
             [#_guia \ #profe],
+            [#_coguia \ #profe2],
             1fr,
             [#_comision \ #_nombre_comision],
             2fr,
