@@ -192,3 +192,19 @@ def plot_training(gnn,train_error,training_values_acc,val_error,validation_value
 
     # Mostrar el gráfico
     plt.show()
+
+
+import dgl
+import networkx as nx
+import matplotlib.pyplot as plt
+
+def plot_dgl_graph(dgl_graph):
+    # Convertir el grafo DGL a un grafo NetworkX para facilitar la visualización
+    nx_graph = dgl_graph.to_networkx()
+    
+    # Dibujar el grafo usando NetworkX y Matplotlib
+    plt.figure(figsize=(8, 6))  # Ajustar el tamaño de la figura
+    nx.draw(nx_graph, with_labels=True, node_color='skyblue', 
+            node_size=500, font_size=12, font_color='black', edge_color='gray')
+
+    plt.show()
