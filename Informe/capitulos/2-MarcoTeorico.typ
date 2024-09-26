@@ -43,6 +43,10 @@ complejas en los datos.
 
 PONER IMAGEN:JERARQUIA CONCEPTUAL ENTRE INTELIGENCI ARTIFICIAL, MACHINE LEARNINH Y DEEP LEARNING
 
++ MAchine learning es una rama de la inteligencia artificial, que ya no depende de unas reglas y u programador, sino que la computadora puede establecer sus propias reglas y aprender por si misma
+
++ Aprendizaje Supervisado: 
+
 == Redes Neuronales 
 
 Una Red Neuronal es un modelo computacional compuesto de neuronas (perceptrones),
