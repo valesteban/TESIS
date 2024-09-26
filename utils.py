@@ -134,8 +134,10 @@ def plot_training(gnn,train_error,training_values_acc,val_error,validation_value
     # Clasificación Binaria
     if optimal_threshold != None:
         # Tensores "desconecte" los gradientes y se convierta en numpy
-        train_predictions_list_epochs = [(tensor > optimal_threshold).detach().numpy().astype(float) for tensor in training_values_acc]
-        val_predictions_list_epoches = [(tensor > optimal_threshold).detach().numpy().astype(float) for tensor in validation_values_acc]
+        train_predictions_list_epochs = [(tensor.detach().numpy() > optimal_threshold).astype(float) for tensor in training_values_acc]
+        # train_predictions_list_epochs = [(tensor > optimal_threshold).detach().numpy().astype(float) for tensor in training_values_acc]
+        # val_predictions_list_epoches = [(tensor > optimal_threshold).detach().numpy().astype(float) for tensor in validation_values_acc]
+        val_predictions_list_epoches = [(tensor.detach().numpy() > optimal_threshold).astype(float) for tensor in validation_values_acc]
 
         # Listas para guardar las Accuracies por epoch
         accuracy_train_per_epoch = []
