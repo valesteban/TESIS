@@ -7,46 +7,46 @@ import seaborn as sns
 from collections import Counter
 
 
-
-def plot_roc_curve(true_labels, predicted_scores):
-
+def plot_roc_curve(true_labels, predicted_scores, optimal_threshold=None):
     # Calcular la curva ROC y el AUC
     fpr, tpr, thresholds = roc_curve(true_labels, predicted_scores)
     roc_auc = roc_auc_score(true_labels, predicted_scores)
 
-    # Seleccionar el threshold óptimo (punto más cercano a (0, 1))
-    optimal_idx = np.argmin(np.sqrt(fpr**2 + (1-tpr)**2))
-    optimal_threshold = thresholds[optimal_idx]
+    if optimal_threshold is None:
+        # Seleccionar el threshold óptimo (punto más cercano a (0, 1))
+        optimal_idx = np.argmin(np.sqrt(fpr**2 + (1 - tpr)**2))
+        threshold = thresholds[optimal_idx]
+        # Crear el subplot para las distribuciones y la curva ROC
+        fig, ax = plt.subplots(1, 2, figsize=(14, 6))
+            # Graficar la curva ROC
+        ax[1].plot(fpr, tpr, color='blue', lw=2, label='ROC curve (area = %0.2f)' % roc_auc)
+        ax[1].plot([0, 1], [0, 1], color='gray', lw=2, linestyle='--')
+        ax[1].scatter(fpr[optimal_idx], tpr[optimal_idx], color='red', label=f'Optimal Threshold = {threshold:.2f}')
+        ax[1].set_xlim([0.0, 1.0])
+        ax[1].set_ylim([0.0, 1.05])
+        ax[1].set_xlabel('False Positive Rate')
+        ax[1].set_ylabel('True Positive Rate')
+        ax[1].set_title('Receiver Operating Characteristic')
+        ax[1].legend(loc="lower right")
 
+    else:
+        threshold = optimal_threshold
+        # Crear solo un subplot para la curva ROC
+        fig, ax = plt.subplots(1, 1, figsize=(7, 6))
+        ax = [ax]  # Convertir ax en una lista para manejarlo uniformemente
 
-    # Crear el subplot para las distribuciones y la curva ROC
-    fig, ax = plt.subplots(1, 2, figsize=(14, 6))
-
-    # true_labels == 1  -> Me entrega una lista con booleanos dependiendo si se cumple o no la condicion
+    # Graficar las distribuciones de los puntajes predichos
     train_pos_score = predicted_scores[true_labels == 1]
     train_neg_score = predicted_scores[true_labels == 0]
 
-
-
     ax[0].hist(train_pos_score, bins=50, alpha=0.5, label='Positive Scores')
     ax[0].hist(train_neg_score, bins=50, alpha=0.5, label='Negative Scores')
-    ax[0].axvline(x=optimal_threshold, color='red', linestyle='--', linewidth=2, label=f'Threshold = {optimal_threshold:.2f}')
+    ax[0].axvline(x=threshold, color='red', linestyle='--', linewidth=2, label=f'Threshold = {threshold:.2f}')
     ax[0].set_title('Distributions of Predicted Scores')
     ax[0].set_xlabel('Score')
     ax[0].set_ylabel('Frequency')
     ax[0].legend()
 
-    # 2. Graficar la curva ROC
-    ax[1].plot(fpr, tpr, color='blue', lw=2, label='ROC curve (area = %0.2f)' % roc_auc)
-    ax[1].plot([0, 1], [0, 1], color='gray', lw=2, linestyle='--')
-    ax[1].scatter(fpr[optimal_idx], tpr[optimal_idx], color='red', label=f'Optimal Threshold = {optimal_threshold:.2f}')
-
-    ax[1].set_xlim([0.0, 1.0])
-    ax[1].set_ylim([0.0, 1.05])
-    ax[1].set_xlabel('False Positive Rate')
-    ax[1].set_ylabel('True Positive Rate')
-    ax[1].set_title('Receiver Operating Characteristic')
-    ax[1].legend(loc="lower right")
 
     # Mostrar las gráficas
     plt.tight_layout()
@@ -54,7 +54,8 @@ def plot_roc_curve(true_labels, predicted_scores):
 
     print(f'AUC: {roc_auc}')
 
-    return optimal_threshold
+    return threshold
+
 
 
 def calculate_metrics(predicted_scores,true_values , threshold=None):
