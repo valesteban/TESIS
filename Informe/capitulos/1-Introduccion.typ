@@ -7,7 +7,7 @@ En la sociedad actual el Internet juega un papel esencial en la vida cotidiana, 
 El Internet está conformado por miles de Sistemas Autónomos (SA) interconectados entre sí. Cada SA consiste en un conjunto de IPs que comparten un mismo protocolo de enrutamiento y están administradas por una misma entidad, como proveedores de servicios de Internet (ISP), empresas comerciales, universidades, entre otros. A cada uno de estos Sistemas Autónomos se le asigna un número y prefijos de direcciones IP, los cuales anuncia a sus vecinos a través del Border Gateway Protocol (BGP). BGP es un protocolo dinámico de enrutamiento externo en el que los SA anuncian sus tablas de ruteo y cambios en sus AS-Paths para alcanzar direcciones IP específicas.  De esta manera, cada SA recibe estos anuncios de todos sus vecinos BGP y toma decisiones sobre la mejor forma de direccionar sus paquetes. \\
 
 
-Dentro del grafo de Sistemas Autónomos que conforma Internet, el camino que un paquete recorre de un nodo a otro no suele ser el más corto debido a los acuerdos comerciales que cada SA, como entidad independiente, establece con sus vecinos. Estos acuerdos se clasifican en tres tipos de relaciones: 1) Provider-to-customer (P2C), en el cual el cliente paga al SA proveedor para que este enlace permita el tráfico de sus paquetes hacia el resto de Internet. 2) Peer-to-peer (P2P), donde los SA intercambian tráfico entre sí y con sus clientes, pero no con sus proveedores u otros pares. 3) Sibling-to-sibling (S2S), cuando dos SA pertenecen al mismo dominio. Gao [1] propuso reglas para modelar estas relaciones entre SA, que reflejan cómo suelen configurarse en BGP, lo que permite inferir las posibles rutas seleccionadas por este protocolo. Sin embargo, estas soluciones se basan principalmente en el cálculo de heurísticas. Por otro lado, estudios más recientes como el de Shapira y Shavitt~\cite{UnveilingtheTypeRelationshipBetweenAutonomousSystemsUsingDeepLearning} proponen técnicas de Deep Learning, creando representaciones de los SA que luego son utilizadas en una Red Neuronal.\\
+Dentro del grafo de Sistemas Autónomos que conforma Internet, el camino que un paquete recorre de un nodo a otro no suele ser el más corto debido a los acuerdos comerciales que cada SA, como entidad independiente, establece con sus vecinos. Estos acuerdos se clasifican en tres tipos de relaciones: 1) Provider-to-customer (P2C), en el cual el cliente paga al SA proveedor para que este enlace permita el tráfico de sus paquetes hacia el resto de Internet. 2) Peer-to-peer (P2P), donde los SA intercambian tráfico entre sí y con sus clientes, pero no con sus proveedores u otros pares. 3) Sibling-to-sibling (S2S), cuando dos SA pertenecen al mismo dominio. Gao [???] propuso reglas para modelar estas relaciones entre SA, que reflejan cómo suelen configurarse en BGP, lo que permite inferir las posibles rutas seleccionadas por este protocolo. Sin embargo, estas soluciones se basan principalmente en el cálculo de heurísticas. Por otro lado, estudios más recientes como el de Shapira y Shavitt@UnveilingtheTypeRelationshipBetweenAutonomousSystemsUsingDeepLearning proponen técnicas de Deep Learning, creando representaciones de los SA que luego son utilizadas en una Red Neuronal.\\
 
 // %HABLAR DEL PROBLEMA
 
@@ -23,14 +23,8 @@ Así nace esta tesis, con el objetivo de explorar el comportamiento de las Redes
 == Motivación
 *(está copiado el problema, es similar pero revisar de cambiar la forma en cómo se plantea)*
 
-El problema a abordar mediante esta investigación radica en la necesidad crítica de comprender, medir y evaluar la degradación en la calidad de servicio de Internet en situaciones específicas donde los nodos de la red experimentan desconexiones. En la actualidad, Internet se ha convertido en un componente esencial para individuos y organizaciones en todo el mundo, desempeñando un papel fundamental en la vida cotidiana y en el funcionamiento de diversas aplicaciones y servicios críticos.
-
-La resiliencia de Internet, entendida como su capacidad para mantener la calidad de servicio incluso en condiciones desafiantes, se ve comprometida cuando los nodos experimentan desconexiones. Esta situación se traduce en fenómenos perjudiciales como la pérdida de paquetes, retrasos en la transmisión de datos y fluctuaciones en el rendimiento, todos los cuales impactan directamente en la calidad de la experiencia del usuario. La investigación busca explorar a fondo estas situaciones, clasificando distintos escenarios de desconexión y definiendo métricas específicas para evaluar cómo se manifiesta la degradación en la QoS en cada caso.
-
-La investigación se propone analizar y clasificar diversas situaciones de desconexión, elegir métricas específicas para evaluar la QoS, realizar pruebas realistas en un simulador, y comparar enfoques existentes.
-
 == Hipótesis
-Las Redes Neuronales de Grafos (GNNs) pueden ofrecer un rendimiento superior en comparación con las metodologías del estado del arte //@UnveilingtheTypeRelationshipBetweenAutonomousSystemsUsingDeepLearning
+Las Redes Neuronales de Grafos (GNNs) pueden ofrecer un rendimiento superior en comparación con las metodologías del estado del arte @UnveilingtheTypeRelationshipBetweenAutonomousSystemsUsingDeepLearning
   para la inferencia del tipo de relación entre Sistemas Autónomos.
 
 
@@ -46,36 +40,27 @@ El objetivo principal de este estudio es evaluar diversas arquitecturas de Redes
 
  + Obtención de datos: Recopilar datos de fuentes confiables como
  //CAIDAAS-rank,CAIDAPeeringDB,CAIDAAS-relationship
-  que correspondan a Sistemas Autónomos representativos de la Red de Internet. Esto implica obtener datos sobre nodos, características y relaciones entre ellos. Asimismo, obtener información relevante sobre flujos de paquetes BGP.\item Preparación de datos: Mejorar la calidad de los datos mediante el uso de técnicas de normalización, conversión de atributos categóricos a numéricos, manejo de desequilibrio de clases, entre otros.
+  que correspondan a Sistemas Autónomos representativos de la Red de Internet. Esto implica obtener datos sobre nodos, características y relaciones entre ellos. Asimismo, obtener información relevante sobre flujos de paquetes BGP.
+  + Preparación de datos: Mejorar la calidad de los datos mediante el uso de técnicas de normalización, conversión de atributos categóricos a numéricos, manejo de desequilibrio de clases, entre otros.
  Además, construir el grafo y definir cómo se proporcionarán los datos de entrada a nuestros modelos GNNs.
  + Diseño e implementación de modelos: Diseñar e implementar modelos GNN y framework específicos que permita la inferencia del tipo de relación que dos Sistemas Autónomos comparten.
  + Evaluación de performance: Comparar el desempeño de diferentes arquitecturas de GNNs en las inferencias, identificando los parámetros de mayor relevancia.
- + Análisis de resultados: Comprender los resultados obtenidos mediante el estudio y la comparación con los valores esperados y estado del arte
- //~\citeUnveilingtheTypeRelationshipBetweenAutonomousSystemsUsingDeepLearning
+ + Análisis de resultados: Comprender los resultados obtenidos mediante el estudio y la comparación con los valores esperados y estado del arte @UnveilingtheTypeRelationshipBetweenAutonomousSystemsUsingDeepLearning.
 
 == Metodología
 
-// El plan de trabajo que se espera llevar a cabo durante esta investigación consta de cuatro etapas:\\
-
-// \begin{description}
-// \item[Primera etapa: Investigación y familiarización]
-// En esta primera etapa, se llevará a cabo la lectura de artículos académicos relacionados con el uso de GNNs, además de artículos relevantes en la representación de datos de internet, con el objetivo de adquirir conocimiento sobre el problema en cuestión. Al mismo tiempo, se realizará un estudio detallado de datasets representativos de internet y, más importante aún, de la topología de BGP, junto con actualizaciones de estos e información adicional que se puede obtener tanto de sistemas autónomos como de los paquetes que intercambian.
-// En paralelo a la investigación, se procederá al desarrollo de modelos básicos de GNNs con el propósito de familiarizarse con las herramientas que se utilizarán a lo largo del proyecto.
-
-// \item[Segunda etapa: Preparación de datos]
-//    Una vez se tenga información sobre la topología BGP, los
-// Sistemas Autónomos que la componen y los tipos de relaciones de entre ellos, se procederá a convertir los datos a la representación de entrada que nuestro modelo recibirá.
-
-// Esto también implica el uso de diversas técnicas destinadas a mejorar la calidad de los datos. El enfoque de esta etapa dependerá del estado inicial de los datos, lo que podría implicar acciones como la limpieza de datos, normalización y reducción de la variabilidad, entre otros procesos que se consideren necesarios.
-
-// \item[Tercera etapa: Construcción de modelos y entrenamiento]
-// Una vez finalizada la investigación y la familiarización con el problema y las herramientas pertinentes, se dará inicio a la implementación de diversos frameworks y metodologías, utilizando diferentes modelos de GNNs con el conjunto de datos. Posteriormente, se procederá a entrenar los modelos y a ajustar los hiperparámetros o realizar cambios según sea necesario. Se realizará un seguimiento de los resultados, comparándolos con los hallazgos de los artículos académicos previamente revisados. Esto permitirá un proceso de mejora continua, aprendizaje y adaptación en la creación de estos modelos.
+El plan de trabajo que se espera llevar a cabo durante esta investigación consta de cuatro etapas:
 
 
-//  \item[Cuarta etapa: Análisis de resultados] 
-//  Una vez terminada la construcción de los modelos, se procederá a analizar los resultados obtenidos para finalmente empezar a escribir el informe de esta tesis.
+/ Investigación y familiarización: En esta primera etapa, se llevará a cabo la lectura de artículos académicos relacionados con el uso de GNNs, además de artículos relevantes en la representación de datos de internet, con el objetivo de adquirir conocimiento sobre el problema en cuestión. Al mismo tiempo, se realizará un estudio detallado de datasets representativos de internet y, más importante aún, de la topología de BGP, junto con actualizaciones de estos e información adicional que se puede obtener tanto de sistemas autónomos como de los paquetes que intercambian. En paralelo a la investigación, se procederá al desarrollo de modelos básicos de GNNs con el propósito de familiarizarse con las herramientas que se utilizarán a lo largo del proyecto.
 
-// \end{description}
+/ Preparación de datos: Una vez se tenga información sobre la topología BGP, los Sistemas Autónomos que la componen y los tipos de relaciones de entre ellos, se procederá a convertir los datos a la representación de entrada que nuestro modelo recibirá. Esto también implica el uso de diversas técnicas destinadas a mejorar la calidad de los datos. El enfoque de esta etapa dependerá del estado inicial de los datos, lo que podría implicar acciones como la limpieza de datos, normalización y reducción de la variabilidad, entre otros procesos que se consideren necesarios.
+
+/ Construcción de modelos y entrenamiento: Una vez finalizada la investigación y la familiarización con el problema y las herramientas pertinentes, se dará inicio a la implementación de diversos frameworks y metodologías, utilizando diferentes modelos de GNNs con el conjunto de datos. Posteriormente, se procederá a entrenar los modelos y a ajustar los hiperparámetros o realizar cambios según sea necesario. Se realizará un seguimiento de los resultados, comparándolos con los hallazgos de los artículos académicos previamente revisados. Esto permitirá un proceso de mejora continua, aprendizaje y adaptación en la creación de estos modelos.
+
+
+/ Análisis de resultados: Una vez terminada la construcción de los modelos, se procederá a analizar los resultados obtenidos para finalmente empezar a escribir el informe de esta tesis.
+
 
 == Contribuciones
 
