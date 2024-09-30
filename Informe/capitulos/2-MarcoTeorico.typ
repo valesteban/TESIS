@@ -285,20 +285,52 @@ GraphSAGE @GraphSAGE
 ==== Balance 
 ==== Aumento de Datos (data augmentation)
 === Entrenamiento
+Existen 2 approach oara llevar a cabo el entrenamiento de una GNN, estos son:
+
+- Inductive Learning: Se entrena el modelo en un subconjunto de nodos y luego se evalúa en un conjunto de nodos no vistos.
+
+
+- Transductive Learning: Se entrena el modelo en todo el grafo y luego se evalúa en un subconjunto de nodos.
+
+
+#figure(
+  image("../imagenes/InductiveTransductive.jpg", width: 60%),
+  caption: [Inductive y transductive settings para entrenar y testear un modelo GNN.],
+) <SettingStochasticGradientDescent>
+
+En el caso de la tarea de classificación de nodos, en el enfoque inductivo, se entrena el modelo en un subconjunto de nodos y luego se evalúa en un conjunto de nodos no vistos. En cambio para el enfoque transductivo, Se tiene un solo gran grafo de donse un subconjunto de este es seleccionado para entrenar el modelo y el resto para testearlo.
 
 ==== Optimización
 
+El entrenamiento de uan Red tiene como fin encontrar los pesos de los parametros que minimicen la función de perdida. Este error calcula la diferencia entre los valores que tira la Red Neuronal y los correctos. Con este error se realiza lo uqe se conoce como _backpropagation_ que consiste en calcular el gradiente de la función de perdida con respecto a los pesos de la Red. Este gradiente se utiliza para actualizar los pesos de la Red de forma que se minimice la función de perdida.(Buscar referencia)
 
-Para entender el Sampling primeo debemos recordar que para entrear un modelo se va optimizando el valor de la perdida, se pueden en base a esto apdoptar tres estrategias al momento del entrenamiento:
+Para backpropagation se utiliza el método del gradiente con el fin de optimizar los parámetros de la red y encontrar el menor error posible. Para esto debemos calcular la derivada del error respecto a cada parámetro. Esta derivada nos permitirá movernos en la dirección de la pendiente en bajada y así disminuir el error.
 
-- Stochastic Gradient Descent: Para cada elemneto se calcula el gradiente y se realiza un update de los pesos. Cada update esta basado en el gradiente calculado  de u nodo seleccionados de forma aleatoria del dataset. 
+
+
+Algunos optimizadores Comunes:
+- *Descenso del Gradiente con Momentum*:
+Introduce un término de "momentum" en el cálculo del gradiente para evitar oscilaciones y hacer que el proceso de optimización sea más suave y eficiente. Ayuda a superar barreras locales en la función de pérdida.
+
+- *Descenso de Gradiente Estocástico con Nesterov Momentum*:
+Variante del descenso de gradiente con momentum que realiza una "anticipación" antes de calcular el gradiente. Mejora la velocidad de convergencia en algunas situaciones.
+- *Adam*: Adaptive Moment Estimation,Ajusta dinamicamente la tasa de aprendizaje para cada parametro , utilizando el momentum de primer y segundo orden de los gradientes.
+
+- *RMSprop*: Root Mean Square Propagation, Ajusta la tasa de aprendizaje de forma adaptativa para cada parametro, utilizando el promedio de los cuadrados de los gradientes.
+
+
+
+
+Existen diferentes tipos de optimización que se pueden utilizar para entrenar una Red Neuronal, estos son:
+
+- *Stochastic Gradient Descent*: Para cada elemneto se calcula el gradiente y se realiza un update de los pesos. Cada update esta basado en el gradiente calculado  de u nodo seleccionados de forma aleatoria del dataset. 
 
 #figure(
   image("../imagenes/StochasticGradientDescent.jpg", width: 30%),
   caption: [Stochastic Gradient Descent.],
 ) <StochasticGradientDescent>
 
-- Batch Gradient Descent : Para todo el dataset se calcula u promedio del gradiente y lueo se realiza el update de los pesos. El datset entero se usa en cada iteración del entrenamiento. El pesos de los parametros se update una vez por cada epoch.  Hay un risego de overfittig  ya que el modelo es expuesto de forma reptida eln el mismo orden.
+- *Batch Gradient Descent* : Para todo el dataset se calcula u promedio del gradiente y lueo se realiza el update de los pesos. El datset entero se usa en cada iteración del entrenamiento. El pesos de los parametros se update una vez por cada epoch.  Hay un risego de overfittig  ya que el modelo es expuesto de forma reptida eln el mismo orden.
 
 #figure(
   image("../imagenes/BatchGradientDescent.jpg", width: 30%),
@@ -306,7 +338,7 @@ Para entender el Sampling primeo debemos recordar que para entrear un modelo se 
 ) <BatchGradientDescent>
 
 
-- Mini Batch Gradient Descent: Se divide el dataset en pequeños subconjuntos y se calcula el gradiente para cada uno de ellos y se realiza el update de los pesos.
+- *Mini Batch Gradient Descent*: Se divide el dataset en pequeños subconjuntos y se calcula el gradiente para cada uno de ellos y se realiza el update de los pesos.
 Consiste en subdividir el dataset en sets más pequeños llamados mini-batches. El peso de los parametros se actualiza una vez por cada mini-batch. Se introduce un hiprpaametro para estre caso orrespondiente al tamaño del mini-batch.
 
 #figure(
@@ -322,9 +354,7 @@ Consiste en subdividir el dataset en sets más pequeños llamados mini-batches. 
 
 ==== Sampling
 
-_Sampling_ (muestreo en español) en MAchine Learning coresponde a la tecnica utilizada para seleccionar subconjuntos de datos para entrenar o evaluar un modelo, en ve de utilizar el conjunto de datos completo. 
-Esta tecnica se usa con le fin de : Cuando se trabaja con dataset muy grandes, como por ehjemplo..., es computacionalmente costoso porcesar todos los datos en cada iteración del enrenamiento, otra razon es  la generalización, al muestrear diferentes subconjuntos de datos en diferentes iteraciones, el modelo tiene más probabilidades de generalizar de forma correcta y no sobreajustar los datos.
-
+_Sampling_ (muestreo en español) en MAchine Learning coresponde a la tecnica utilizada para seleccionar subconjuntos de datos para entrenar o evaluar un modelo, en ve de utilizar el conjunto de datos completo. Esta tecnica se usa con le fin de : Cuando se trabaja con dataset muy grandes, como por ehjemplo..., es computacionalmente costoso porcesar todos los datos en cada iteración del enrenamiento, otra razon es  la generalización, al muestrear diferentes subconjuntos de datos en diferentes iteraciones, el modelo tiene más probabilidades de generalizar de forma correcta y no sobreajustar los datos.
 En GNN, el sampling es esencial debido a la naturaleza estructurada y muchas veces masiva de los grafos. 
 existen varias tecnicas especificas par atrabajar el sampling en este tipo de Redes Neuronales.
 
@@ -336,22 +366,19 @@ existen varias tecnicas especificas par atrabajar el sampling en este tipo de Re
 
 
 
-- Random Node Sampling: Se selecciona de forma aleatotia un subset de nodos del grafoo completo.
-REduce el costo computacional en comparacion a entrenar todos los nodos de un grafo. Hay redundancia al calcular los embeddings si esque dos nodos comparten el mismo vecino, el embedidng de dicho nodo será calculado dos veces.
+- *Random Node Sampling*: Se selecciona de forma aleatotia un subset de nodos del grafoo completo. Reduce el costo computacional en comparacion a entrenar todos los nodos de un grafo. Hay redundancia al calcular los embeddings si esque dos nodos comparten el mismo vecino, el embedidng de dicho nodo será calculado dos veces.
 
-- Neighbor Sampling: Se selecciona un numero expecifico de vecinos para cada nodo en cada capa de la Red. Esto evita 
+- *Neighbor Sampling*: Se selecciona un numero expecifico de vecinos para cada nodo en cada capa de la Red. Esto evita 
 
 PAPERS: GraphSAGE@GraphSAGE, 
 PAPERS: PinSAGE@PinSAGE, @VRGCN
 
-- Layer Sampling: Realiza un uestreo por capas de forma aleatoria e indeoendetie en tre capas. Sin embaro esto puede causr tener nodos aisaldos.
-Tiene como objetivo evitar el calculo redundante en el muestrei po rnodos. Permute un uso más eficiente de memoria.
+- *Layer Sampling*: Realiza un uestreo por capas de forma aleatoria e indeoendetie en tre capas. Sin embaro esto puede causr tener nodos aisaldos. Tiene como objetivo evitar el calculo redundante en el muestrei po rnodos. Permute un uso más eficiente de memoria.
 
 
 Ejemplo de Papers FstGCN@FastGCN, Adaptative Sampling@AdaptiveSampling, LADIES@LADIES
 
-- Subgraph Sampling: Extrae subgrafos de manera aleatoria o divide el grafo original en subgrafos. Estos se entrenan como muestras de datos independientes.
-Reduce el tamaño significativamente  de la data que la GNN tiene que procesar en cada iteracion.  
+- *Subgraph Sampling*: Extrae subgrafos de manera aleatoria o divide el grafo original en subgrafos. Estos se entrenan como muestras de datos independientes. Reduce el tamaño significativamente  de la data que la GNN tiene que procesar en cada iteracion.  
 
 PAPERS: GraphSAINT @GraphSAINT, ClusterGCN @ClusterGCN
 
@@ -385,20 +412,101 @@ Podekos ocupar learn rates más grandes. BN hace que cambie la loss de forma má
 
 Por otro lado BN injetca ruido al proceso de training porque la onormalizacion depende de las estadistcias de todo el batch.
 Nos permite controlar la varianza de los embeddings aprendidos en re capas consecutivas de la GNN..
+
+
+#figure(
+  image("../imagenes/BNLayer.jpg", width: 60%),
+  caption: [Explciacion FIXME:.],
+) <SGD-BGDMBGD>
+¿Qué pasa si este weigh termina siendo muy grande (encomparación a otros)?
+Hara que la salida d ela neurona sea muy grande, afectando asi a la siguente capa, causando inestabilidad en el training.
+Nomlamente se normaliza los inputs  y entonces por que no normlaizar entre capas?
+- Acelera el entrenamiento (podemos ocupar lr mas grandes)
+- Disminuye la imortancia de los pesos iniciales 
+- Regulariza el modelo (un poquito)
+
+Entonces la idea es qu elos pesos no sean muy grandes o muy chicos  y asi no se ve aafectada al estabilidad del modelo.
+
+#import "@preview/algorithmic:0.1.0"
+#import algorithmic: algorithm
+
+#algorithm({
+  import algorithmic: *
+  Function("Batch Normalization", args: ("X", "gamma", "beta", "epsilon"), {
+    Cmt[Calculo mean mini-batchten]
+    Assign[$mu_(Beta)$][$frac(1,m) sum_(i=1)^m x_i$]
+    
+    Cmt[Calculo varianza del mini-batch]
+    Assign[$sigma^2_(Beta)$][$frac(1,m) sum_(i=1)^m (x_i - mu_beta)^2$]
+    
+    Cmt[Normalizar]
+    Assign[$attach(x_i, t: hat)$][$frac(x_i - mu_Beta, sqrt(sigma^2_Beta + epsilon))$]
+    
+    Cmt[Scale and shift]
+    Assign[$y_i$][$gamma attach(x_i, t: hat) + beta $]
+  
+  })
+})
+
 ==== Regularización
+Una de las metas que s etiene al momento de enrenar un modelo es evitar el overfitting y por ende que pueda generalizar los resultados.
+Es decir logre classificar correctamente un dato nunca visto anteriormente.
 
-==== Dropout
+Existen diferentes tecnicas para lograr esto como :
 
-Tienne como objetivo Regularizar la Red Neuronal para impedir el overfitting. Se aplica justo despues de Batch Normalization layer.
+- *Dropout*: Es una tecnica que desactiva un número de neuronas de forma aleatoria.Para aplicar este método se asigna una probabilidad a cada neurona de ser desactivada en la fase de entrenamiento. Esto quiere decir que las conexiones que tenía esa neurona desaparecerán momentáneamente.
 
+
+#figure(
+  image("../imagenes/dropout.png", width: 60%),
+  caption: [Dropout.],
+) <Dropout>
+
+Para el caso de GNN 
 En training:De forma aleatoria se seleccionan neuronas a 0 (drop out) con una probabilidad de p e una capa especifica.
 En Tesing: Se usan todas las neurionas.
 PAPER: @DropGNN
 
 
+- *Early Stoping*: // TODO: Completar
+
+- *L1 y L2 Regularization*: blablabla // TODO: Completar
+
+- *Data Augmentation*: blablabla// TODO: Completar
+
+- *Batch Normalization*: blablabla// TODO: Completar
+
 === Evaluación
 
 ==== Metricas de evaluación
+
+- True Positive (TP): // TODO: Completar
+
+- True Negative (TN): // TODO: Completar
+
+- False Positive (FP): // TODO: Completar
+
+- False Negative (FN): // TODO: Completar
+
+A partir d eestos valores podemos crear la matriz de consusión para clase que s equiere clasificar. Esta es ...
+
+
+#figure(
+  image("../imagenes/noimage.jpg", width: 40%),
+  caption: [Matriz de confusión.],
+) <MatrizConfusion>
+
+Existen diferentes etricas para medir el desempeño de lso modelos estos  son:
+
+- *Accuracy*: // TODO: Completar
+
+- *Precision*: // TODO: Completar
+
+- *Recall*: // TODO: Completar
+
+- *F1-Score*: // TODO: Completar
+
+
 
 
 
@@ -432,11 +540,10 @@ Entre los protocolos de ruteo interno se tiene:
 
 - OSPF (Open Shortest Path First): Utiliza el algoritmo de Dijkstra para determinar las rutas más cortas entre nodos@OSPF.
 - RIP (Routing Information Protocol): Utiliza un enfoque de vector de distancia para calcular la ruta más optima, basándose en la cantidad de saltos@RIP.
+- EIGRP (Enhanced Interior Gateway Routing Protocol): 
 
-==== Routing Information Protocol (RIP)
-==== Open Shortest Path First (OSPF)
-==== Enhanced Interior Gateway Routing Protocol (EIGRP) 
-==== Intermediate System to Intermediate System (IS-IS)
+- IS-IS (Intermediate System to Intermediate System):
+
 
 === Ruteo Externo
 
