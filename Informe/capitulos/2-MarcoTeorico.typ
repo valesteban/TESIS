@@ -282,8 +282,7 @@ GraphSAGE @GraphSAGE
 // === Balance de clases
 
 === Procesamiento de Datos
-==== Balance 
-==== Aumento de Datos (data augmentation)
+
 === Entrenamiento
 Existen 2 approach oara llevar a cabo el entrenamiento de una GNN, estos son:
 
