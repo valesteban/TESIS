@@ -1,7 +1,7 @@
 = Marco Teórico
 
 == Grafos
-Un grafo (@imagen-grafo) es una estructura discreta formada a partir del conjunto de vértices
+#h(0.5cm)Un grafo (@imagen-grafo) es una estructura discreta formada a partir del conjunto de vértices
 (también conocido como nodos) y aristas las cuales son las uniones entre estas @gnnReviewMethods. 
 De forma
 más sencilla un grafo es una representación visual de una relación binaria.
@@ -17,7 +17,7 @@ indicar que existe una arista entre el nodo $v_i$ y $v_j$ . Cada nodo $v_i$ tien
 ) <imagen-grafo>
 
 
-Una forma de representar un grafo es mediante una matriz de adyacencia denotada $A in.small RR^(n times n)$, donde un el valor $A_(i j) = 1$ si $e_(i j) in E$ y $A_(i j) = 0$ si $e_(i j) in.not E$.  Si la matriz es simétrica, el grafo es no dirigido; de lo contrario, se trata de un grafo dirigido.
+#h(0.5cm)Una forma de representar un grafo es mediante una matriz de adyacencia denotada $A in.small RR^(n times n)$, donde un el valor $A_(i j) = 1$ si $e_(i j) in E$ y $A_(i j) = 0$ si $e_(i j) in.not E$.  Si la matriz es simétrica, el grafo es no dirigido; de lo contrario, se trata de un grafo dirigido.
 
 
 Nodos y Aristas de un grafo pueden contener atributos. De esta manera, los atributos de los nodos pueden ser representados mediante una matriz $H_n in RR^(n times d)$ donde cada fila representa un vector de características de un nodo. En el caso de los atributos de las aristas, estos pueden ser representados por la matriz de adyacencia, en la cual, en lugar de contener 1 y 0, contiene dichos atributos.
@@ -34,7 +34,7 @@ Además, los grafos pueden clasificarse en diferentes categorías que ofrecen in
 == Inteligencia Artificial
 
 
-Inteligencia Artifial (IA) es un campo de la informatica que busca simular el comportamiento de la inteligencia humanana, es decir, intenta replicar y automatizar la capacidad del ser humano para tomar desiciones. 
+#h(0.5cm)Inteligencia Artifial (IA) es un campo de la informatica que busca simular el comportamiento de la inteligencia humanana, es decir, intenta replicar y automatizar la capacidad del ser humano para tomar desiciones. 
 
 Dentro del área de la Inteligencia Artificial, nos encontramos con el Machine Learning, diciplina que a través del desarrollo de algoritmos y modelos busca que las máquinas aprendan patrones por medio de la experiencia, la cual incluye datos de entrenamiento y retroalimentación. El objetivo es entrenar una máquina para una tarea especifica sin la necesidad de programar explícitamente un algoritmo.
 
@@ -55,7 +55,7 @@ Finalmente, dentro de Machine Learning se encuentra el campo de Deep Learning, u
 
 == Redes Neuronales 
 
-Una Red Neuronal es un modelo computacional compuesto de neuronas (perceptrones), dispuestas en capas y conectadas entre si con el fin de aprender patrones mediante el intercambio de información ponderada por pesos. Estos pesos se ajustan en base a los datos de entrada, asignando valores en función del reconocimiento de patrones, que permiten una salida esperada.
+#h(0.5cm)Una Red Neuronal es un modelo computacional compuesto de neuronas (perceptrones), dispuestas en capas y conectadas entre si con el fin de aprender patrones mediante el intercambio de información ponderada por pesos. Estos pesos se ajustan en base a los datos de entrada, asignando valores en función del reconocimiento de patrones, que permiten una salida esperada.
 
 
 #figure(
@@ -65,7 +65,7 @@ Una Red Neuronal es un modelo computacional compuesto de neuronas (perceptrones)
 
 
 
-En una Red Neuronal, cada unidad toma entradas, las pondera por separado, suma los valores y pasa esta suma a través de una función para producir una salida, la cual es compartida con otras neuronas a las cuales está conectada. 
+#h(0.5cm)En una Red Neuronal, cada unidad toma entradas, las pondera por separado, suma los valores y pasa esta suma a través de una función para producir una salida, la cual es compartida con otras neuronas a las cuales está conectada. 
 El perceptrón, que funciona como una representación matemática de una unidad básica en la Red, realiza cálculos para determinar tendencias en los datos de entrada, asignándole diferentes pesos a cada valor de entrada en base a patrones entre los datos para realizar tareas específicas.
 
 
@@ -83,7 +83,7 @@ Algunas de las funciones de activación comúnmente empleadas incluyen la Sigmoi
 
 
 
-La técnica comúnmente utilizada para el entrenamiento de Redes Neuronales es el _backpropagation_, que tiene como objetivo ajustar los pesos de los parámetros de la Red para minimizar la función de pérdida@back-propagation. Esta función cuantifica la diferencia entre las predicciones hechas y los valores reales. Una vez que se ha calculado la pérdida, el proceso de optimización se centra en modificar los pesos para mejorar la precisión general de la Red.
+#h(0.5cm)La técnica comúnmente utilizada para el entrenamiento de Redes Neuronales es el _backpropagation_, que tiene como objetivo ajustar los pesos de los parámetros de la Red para minimizar la función de pérdida@back-propagation. Esta función cuantifica la diferencia entre las predicciones hechas y los valores reales. Una vez que se ha calculado la pérdida, el proceso de optimización se centra en modificar los pesos para mejorar la precisión general de la Red.
 
  Durante el entrenamiento de las Redes Neuronales, se emplea el descenso de gradiente, un método que implica el cálculo de la derivada de la función de perdida con respecto a los pesos de la Red. Este cálculo determina la dirección y magnitud en la que los parámetros de un modelo deben ser ajustados para minimizar la función de perdida. Por ende, es fundamental que esta función sea continua y derivable.
 En problemas de regresión, se suele utilizar funciones como el Mean Squared Error y Mean Absolute Error, mientras que en problemas de clasificación, destaca la Cross-Entropy Loss. 
@@ -101,7 +101,7 @@ En problemas de regresión, se suele utilizar funciones como el Mean Squared Err
 
 === Redes Neuronales Feed Forward (FFNN)
 
-También conocida como _multilayer perceptrons_, esta arquitectura representa la forma más simple y fundamental de una Red Neuronal, sirviendo como la base de la mayoría de los modelos de Deep Learning. En esta arquitectura la información fluye exclusivamente hacia "adelante", sin bucles o conexiones hacia atrás.
+#h(0.5cm)También conocida como _multilayer perceptrons_, esta arquitectura representa la forma más simple y fundamental de una Red Neuronal, sirviendo como la base de la mayoría de los modelos de Deep Learning. En esta arquitectura la información fluye exclusivamente hacia "adelante", sin bucles o conexiones hacia atrás.
 
 El flujo de información comienza en la capa de entrada, donde se reciben los datos, seguida de las capas ocultas (_hidden layers_ en ingles), siendo las Fully Connected las más comunes (Figura ???fully-connected), donde cada neurona está conectado a cada neurona de la capa anterior. De esta manera, las salidas de cada perceptrón generan una salida que, al estar conectada con otros nodos, funcionan como entrada para la siguiente capa, continuando así hasta llegar a la capa de salida.
 
@@ -111,7 +111,7 @@ El objetivo principal de una Red Feed Forward es aproximar alguna función $f(x)
 
 === Redes Neuronales Recursivas (RNN)
 
-Las Redes Neuronales Recurrentes (RNN) son una variante de las Redes Neuronales Feed Forward, diferenciándose por su capacidad para retener y utilizar información previa, es decir, poseen "memoria".
+#h(0.5cm)Las Redes Neuronales Recurrentes (RNN) son una variante de las Redes Neuronales Feed Forward, diferenciándose por su capacidad para retener y utilizar información previa, es decir, poseen "memoria".
 
 A diferencia de las Redes Neuronales Feedforward convencionales, que asumen que los datos de entrada en cada capa son independientes entre sí, las Redes Neuronales Recurrentes (RNN) introducen conexiones entre las salidas previas y la salida actual, generando así un proceso de retroalimentación.
 
@@ -123,12 +123,12 @@ Esta característica en las RNN las hace particularmente eficientes para trabaja
 ) <rnn>
 
 
-La imagen de arriba es una representación simple de una Red Neuronal Recurrente ( @rnn). En el lado izquierdo se encuentra la notación abreviada y, en el lado derecho, la notación desplegada para representar RNNs.
+#h(0.5cm)La imagen de arriba es una representación simple de una Red Neuronal Recurrente ( @rnn). En el lado izquierdo se encuentra la notación abreviada y, en el lado derecho, la notación desplegada para representar RNNs.
 Donde $x_t$ es un vector que representa la entrada en el instante de tiempo t. $A$ el estado oculto con el paso del tiempo $t$ y actúa como la "memoria" de la Red, calculando en función del estado oculto anterior y la entrada en el paso actual.
 
 === Redes Neuronales Convolucionales (CNN)
 
-Las Redes Neuronales Convolucionales ( @cnn) son un tipo especializado de modelo de Red Neuronal diseñado especialmente para procesar información en forma de grilla @deep-learning. Su aplicación principal se encuentra en el análisis de imagenes, en el reconocimineto de objetos, clases y categorías. 
+#h(0.5cm)Las Redes Neuronales Convolucionales ( @cnn) son un tipo especializado de modelo de Red Neuronal diseñado especialmente para procesar información en forma de grilla @deep-learning. Su aplicación principal se encuentra en el análisis de imagenes, en el reconocimineto de objetos, clases y categorías. 
 
 
 Las CNN se componen de una capa de entrada, una capa de salida y varias capas ocultas intermedias. Estas capas ocultas llevan a cabo operaciones de convolución, lo que les permite aprender características específicas de las imágenes. En el proceso de convolución, se aplican filtros, a través de matrices de pesos. Estos filtros aprenden a detectar diversas características como bordes, patrones, colores, entre otros. Así a medida que se avanza en las capas de la CNN, la red es capaz de reconocer elementos más complejos.
@@ -141,7 +141,7 @@ Las CNN se componen de una capa de entrada, una capa de salida y varias capas oc
 
 === Graph Neuronla Network (GNN)
 
-Las GNN son una arquitectura de Redes Neuronales especialmente diseñada para realizar predicciones basadas en datos representativos de grafos. A diferencia de las Redes Neuronales convencionales, las GNNs reciben datos en forma de tensores que pueden representar nodos, atributos de nodos, aristas y atributos de aristas.
+#h(0.5cm)Las GNN son una arquitectura de Redes Neuronales especialmente diseñada para realizar predicciones basadas en datos representativos de grafos. A diferencia de las Redes Neuronales convencionales, las GNNs reciben datos en forma de tensores que pueden representar nodos, atributos de nodos, aristas y atributos de aristas.
 
 Existen diferenets enfoques, dependiendo de la tarea de aprendizaje que se quiere llevar a cabo, estos son:
 
@@ -184,7 +184,7 @@ El modelo recibe como entrada un grafo, y en la capa GNN, se emplea un operador 
 
 ==== Message Passing Neural Networks (MPNN)
     
-Es la arquitectura de Red Neuronal para grafos más utilizada. Su funcionamiento radica en la idea de que cada nodo en un grafo puede intercambiar información con sus vecinos de manera que cada nodo podrá actualizar su representación en base a la información acumulada por su entorno.
+#h(0.5cm)Es la arquitectura de Red Neuronal para grafos más utilizada. Su funcionamiento radica en la idea de que cada nodo en un grafo puede intercambiar información con sus vecinos de manera que cada nodo podrá actualizar su representación en base a la información acumulada por su entorno.
 
 
 La información se propaga entre nodos a través de mensajes. Cada nodo envía mensajes a sus nodos vecinos y recibe mensajes de ellos. Estos mensajes pueden contener información sobre el nodo emisor y se utilizan para actualizar la representación del nodo receptor@mpnn.
@@ -209,25 +209,23 @@ A continuación ( @pipelineMP), se presenta el comportamiento de una capa de MPN
 
 
 
-Es un tipo específico de MPNN, donde se utilizan convoluciones de grafos para agregar información de los nodos adyacente de un nodo en un grafo. 
+#h(0.5cm)Es un tipo específico de MPNN, donde se utilizan convoluciones de grafos para agregar información de los nodos adyacente de un nodo en un grafo. 
 
 La operación de convolución en el grafo produce la suma normalizada de las características de los nodos vecinos@GCN-formula. Esta normalización garantiza que la información agregada sea ponderada correctamente, es decir, evitar que un nodo con gran cantidad de vecinos tenga una representación desproporcionada y que luego tenga una influencia mayor en la representación otros nodos en las siguientes capas.
 
-La notación de los embeddings de los nodos $h^((l+1))_i$ en la capa $l+1$ de la red está dado por: 
+La notación de los embeddings de los nodos está dado por: 
 
 $
-    h^((l+1))_i = sigma(b^((l))_i + sum_(j in N(i)) frac(1, c_(j i)) h^((l))_j W^((l))
-    )
+H^((l+1)) = sigma(tilde(D)^(-frac(1,2)) tilde(A) tilde(D)^(-frac(1,2)) H^((l)) W^((l)))
 $
+#h(0.5cm)Donde  $sigma$ se define como la función de activación, $H^((l))$ la matriz de caracteristicas de los nodos en la capa $l$, $W^((l))$ la matriz de aprendizaje de pesos, con dimensionalidades dada por el tamaños de atributos entrantes y de salida por capa y $tilde(D)^(-frac(1,2)) tilde(A) tilde(D)^(-frac(1,2)) $ la matriz de adyacencia normalizada.  
 
-Donde  $N(i)$ es el conjunto de nodos vecinos del nodo 
-$i$,  $c_(j i) = sqrt(|N(j))| sqrt(|N(i)|)$ y $sigma$
-la función de activación, $b^((l))_i$ corresponde al sesgo en la capa $l$ de la red.
+Es asi como GCN permite la creación de embeddings para los nodos de un grafo dada la matriz de adyacencia de este, lo que quiere decir que debe conocer el grafo completo para poder realizar la tarea de aprendizaje. Este es un enfoque transductivo, en contraste a otros enfoques inductivos como GraphSAGE.
 
 
 ==== Graph Attention Network (GAT)
 
-Otra variante de MPNN son las Graph Attention Networks (GAT). A diferencia de una Red Neuronal de Convolución, GAT incorpora un mecanismo de atención que permite que cada nodo pondere de forma diferenciada, indicando la importancia de las representaciones de cada vecino para la actualización de las características de un nodo@GAT.
+#h(0.5cm)Otra variante de MPNN son las Graph Attention Networks (GAT). A diferencia de una Red Neuronal de Convolución, GAT incorpora un mecanismo de atención que permite que cada nodo pondere de forma diferenciada, indicando la importancia de las representaciones de cada vecino para la actualización de las características de un nodo@GAT.
 
 Los coeficientes se calculan por un mecanismo el cual calcula un puntaje para cada par de nodos. Luego estos puntajes se normalizan por medio de la función SoftMax ( @calculoGAT).
 
@@ -235,31 +233,27 @@ Así tenemos:
 
 $
    z^((l))_(i) = W^((l)) bold(h^((l))_i)
-  //  \label{paso-1-gat}   FIXME: Ver como puedo etiquetar ecuaciones para luego referenciarlas 
-$
+$<gat-formula-1>
+
 $   
   e^((l))_(i j) = op("LeakyReLU") (bold(a)^((l)T)(bold(z)^((l))_i || bold(z)^((l))_j))
-$
+$<gat-formula-2>
+
 $
    alpha^((l))_(i j) = frac(e^((l))_(i j),sum_{k in N(i)} exp(e^((l))_(i k)))
-   
-  //  \label{paso-3-gat}
-$
+$<gat-formula-3>
 
 $
     h^((l+1))_i = sigma(sum_(j \in N(i)) alpha^((l))_(i j) z^((l))_j)
-    // \label{paso-3-gat}
-$
+$<gat-formula-4>
 
-FIXME: Arreglar label pasos ecuaciones
-Donde (2 gat) es la transformación lineal del embedding de la capa anterior $h^((l))_i$ con $ W^((l))_i$ una matriz de pesos entrenable.
+#h(0.5cm) Donde la @gat-formula-1 corresponde a la transformación lineal del embedding de la capa anterior $h^((l))_i$ con $ W^((l))_i$ una matriz de pesos entrenable.
 
+La @gat-formula-2 calcula un puntaje de atención entre dos vecinos.  Primero concatena los embeddings $z$ de dos nodos. Luego realiza el producto punto entre este y una matriz entrenable $a^((l))$  y aplica una función LeakyReLU al final.
 
-La ecuación (FIXME:3) calcula un puntaje de atención entre dos vecinos.  Primero concatena los embeddings $z$ de dos nodos. Luego realiza el producto punto entre este y una matriz entrenable $a^((l))$  y aplica una función LeakyReLU al final.
+En @gat-formula-3 se aplica una función softmax, con el objetivo de normalizar los puntajes de atención en las aristas entrantes de cada nodo.
 
-En (FIXME:4) se aplica una función softmax, con el objetivo de normalizar los puntajes de atención en las aristas entrantes de cada nodo.
-
-Finalmente, en la ecuación (FIXME:5), al igual que en GCN, se lleva a cabo la agregación de los nodos vecinos, pero en este caso, se escala por el puntaje de atención. Se utiliza  $ sigma$ como la función de activación que se aplicará a la capa.
+Finalmente, en la @gat-formula-4, al igual que en GCN, se lleva a cabo la agregación de los nodos vecinos, pero en este caso, se escala por el puntaje de atención. Se utiliza  $sigma$ como la función de activación que se aplicará a la capa.
 
 #figure(
   image("../imagenes/GAT.png", width: 40%),
@@ -268,23 +262,49 @@ Finalmente, en la ecuación (FIXME:5), al igual que en GCN, se lleva a cabo la a
 
 
 
-==== GraphSAGE
+==== GraphSAGE (SAmple and aggreGatE)
 
- A diferencia de métodos anteriores que requerían la representación completa de un grafo en la memoria, GraphSAGE puede aprender a generalizar a grafos de diferentes tamaños y estructuras, lo que lo hace particularmente útil para aplicaciones en redes sociales, biología, recomendación, etc.
+#h(0.5cm)Es un framework de aprendizaje inductivo el cual nos permite aprender representaciones de los nodos de un grafo. A diferencia de los enfoques anteriores los cuales son inherentemente transductivos donde se crean las representaciones de los nodos por medio de la recolección de la infomeación de todos sus nodos vecinos, utilizando factorización de matrices, GraphSAGE "aprende" a crear las representaciones de sus nodos, es decir graphSAGE utiliza las caracteristicas de nodos de su vecindario y la topología para aprender una funcion que genera los embeddings en base a un muestreo de nodos vecinos. Ayudado de esta forma a generalizar sobre nodos no vistos naturalmente @GraphSAGE. 
+GraphSAGE no necesita de todos sus vecinos durante el entrenamiento para crear una representacion de el mismo, sino que a traves de un subconjunto de estos aprendera a crear un embedding, que representa su rol local y global en un grafo.
+ 
 
-GraphSAGE @GraphSAGE
-// #figure(
-//   image("../imagenes/Inteligencia Artificial.jpg", width: 40%),
-//   caption: [jerarquía conceptual entre Inteligencia Artifial, Machine Learning y Deep Learning.],
-// ) <jerarquiaIAMLDL>
-// TODO:
-// == Procesamiento de datos
-// === Balance de clases
+¿Qué significa que sea Inductivo?
+
+Que sea inductivo significa que puede crear embeddings para nodos no vistos durante el entrenamiento. Es decri no necesesita conocer todo el grafo ni todos lso nodos para crear estars representaciones. 
+Este enfoque es util principalmente a la hora de trabajar con grafos dinámicos, batching/sampling, etc. Representando asi a nodos een un vector de baja dimensionalidad y generalizondo para luego nodos no vistos.
+
+El proceso de creación de embeddings para los nodos del garfo estan dados por las siguientes ecuaciones:
+$
+   h^((l+1))_(N(i)) = op("aggregate") ({ h^l_j, ∀ j ∈ N(i) })
+   
+$<graphsage-formula-1>
+
+$
+h^((l+1))_i = σ(W ⋅ op("concat")(h^l_i, h^((l+1))_(N(i))))
+$<graphsage-formula-2>
+
+$
+h^((l+1))_i = op("norm")(h^((l+1))_i)
+$<graphsage-formula-3>
+
+
+#h(0.5cm)Donde $h^((l+1))_(N(i))$ de la @graphsage-formula-1 representa las características de nodos vecinos de un nodo $i$ en la capa $l+1$ el cual a traves de una funcion de agregación combian estos nodos vecinos (por ejemplo promedio, suma, lstm, etc).
+Luego tenemos $h^((l+1))_i$ correspondiente a la concatenación de la representación anterios del nodos $i$ y la de las caracteristicas de nodos vecinos de la capa $l+1$, correspondiente a lo previamente calculado.
+Finalmente tenemos $op("norm")(h^((l+1))_i)$ la cal se encarga de normalizar las caracteristicas del nodo $i$ en la capa $l+1$.
+
+
+A continuación tenemos @graphsage, el cual ilustra el proceso de creacion de las representaciones de los nodos. Dado primero 1) por la selección de un numero fijo de vecinos de un nodo, 2) Luego la agregación y concatenaciń de las caracteristicas de estos nodos al nodo dst junto con normalizacion, 3) Fianlemente el paso de prediccion y ajuste de valores de los pesos de la red. 
+// GraphSAGE @GraphSAGE
+#figure(
+  image("../imagenes/sample_and_agg.png", width: 60%),
+  caption: [TODO.],
+) <graphsage>
+
 
 === Procesamiento de Datos
 
 === Entrenamiento
-Existen 2 approach oara llevar a cabo el entrenamiento de una GNN, estos son:
+#h(0.5cm)Existen 2 approach oara llevar a cabo el entrenamiento de una GNN, estos son:
 
 - Inductive Learning: Se entrena el modelo en un subconjunto de nodos y luego se evalúa en un conjunto de nodos no vistos.
 
@@ -301,13 +321,110 @@ En el caso de la tarea de classificación de nodos, en el enfoque inductivo, se 
 
 ==== Optimización
 
-El entrenamiento de uan Red tiene como fin encontrar los pesos de los parametros que minimicen la función de perdida. Este error calcula la diferencia entre los valores que tira la Red Neuronal y los correctos. Con este error se realiza lo uqe se conoce como _backpropagation_ que consiste en calcular el gradiente de la función de perdida con respecto a los pesos de la Red. Este gradiente se utiliza para actualizar los pesos de la Red de forma que se minimice la función de perdida.(Buscar referencia)
+#h(0.5cm)Un modelo de Deep Learning consiste en multiples capas de neuronas, las cuales se conectan entre si  y organizadas en capas, estas son parametrizadas por pesos y sesgos. Estos parámetros son ajustados durante la etapa de entrenamiento de la Red, con el fin de minimizar una función de perdida, ed decir la diferencia entre la salida del doelo y los valores reales.
 
-Para backpropagation se utiliza el método del gradiente con el fin de optimizar los parámetros de la red y encontrar el menor error posible. Para esto debemos calcular la derivada del error respecto a cada parámetro. Esta derivada nos permitirá movernos en la dirección de la pendiente en bajada y así disminuir el error.
+#figure(
+  image("../imagenes/Deep-Learning-Optimization-Algorithms.png", width: 60%),
+  caption: [Visualización esquemática del proceso de entrenamiento en un modelo de Red Neuronal.],
+) <opt-grad-loss>
+
+
+El ajuste que se va dando en cada iteración de los pesos de los parametros está dado por un algoritmo de optimización, el cual utiliza los gradientes calculados por _backpropagation_ para determianr dirección, magnitud de las actualizaciones, etc .
+(backpropagation ajusta los pesos de los parametros de la Red para minimizar la función de perdida. Esta función cuantifica la diferencia entre las predicciones hechas y los valores reales. Una vez que se ha calculado la pérdida, el proceso de optimización se centra en modificar los pesos para mejorar la precisión general de la Red.)
+
+
+Controlan cómo se cambia incrementalmente una red neuronal para modelar las relaciones complejas codificadas en los datos de entrenamiento.
+
+
+Estos diferentes algoritmos de optimización buscan llegar a a un minimo global, para ello ocupan diferentes estrategias para escapar de minimos locales, etc....
+
+Existe una variedad de algoritmos de optimización, la desición de cual ocupar, radica en seleccionar el más adecuado para el problema que se desea abordar, efocandose en mejorar la precisión, reducir el tiempo de entrenamiento o gestionar los recursos computacionales.
+- Stochastic Gradient Descent (SGD)
+- Mini-batch Gradient Descent
+- AdaGrad (Adaptive Gradient Algorithm)
+- RMSprop (Root Mean Square Propagation)
+- AdaDelta
+- Adam (Adaptive Moment Estimation)
 
 
 
-Algunos optimizadores Comunes:
+¿Que es el Gradient Descent?
+
+Es el algoritmo diseñado para minimizar uan funcion, de modo de en cada iteracion mociensose hacia el minilo de la duncion. Este comienza en un punto aleatorio y se mueve en la dirección del gradiente negativo de la función en ese punto. El tamaño del paso que se da en cada iteración es controlado por un hiperparametro llamado _learning rate_.
+
+Gradient Descent is the most common optimizer in the class. Calculus is used in this optimization process to make consistent changes to the parameters and reach the local minimum. Before you go any further, you might be wondering what a gradient is? 
+#figure(
+  image("../imagenes/Deep-learning-optimization-algorithms-1.png", width: 60%),
+  caption: [visualizaacion optimixacion del aLgoritmo de Gradient Descnt aolicada a una funcion convexa.],
+) <gradientDescent>
+
+Representación matemática 
+TODO: Insertar ecuación de gradient descent
+
+¿Learning Rate?
+
+Es un hiperparámetro del mdoelo,selecionado manualmente, el cual controla los "pasos" que se van dando en cada iteracion para acercarse al minimo de la funcion de perdida. Un learning rate muy pequeño puede hacer que el modelo tarde mucho en converger, ademas de quedarse en un minimo local. sin embargo uno muy grande puede hacer que el modelo no converga o incluso diverga.
+
+#figure(
+  image("../imagenes/learningRate.png", width: 60%),
+  caption: [visualizaacion learning Rate grande y chico.],
+) <learningRate>
+
+
+// El entrenamiento de uan Red tiene como fin encontrar los pesos de los parametros que minimicen la función de perdida. Este error calcula la diferencia entre los valores que tira la Red Neuronal y los correctos. Con este error se realiza lo uqe se conoce como _backpropagation_ que consiste en calcular el gradiente de la función de perdida con respecto a los pesos de la Red. Este gradiente se utiliza para actualizar los pesos de la Red de forma que se minimice la función de perdida.(Buscar referencia)
+
+
+
+// Para backpropagation se utiliza el método del gradiente con el fin de optimizar los parámetros de la red y encontrar el menor error posible. Para esto debemos calcular la derivada del error respecto a cada parámetro. Esta derivada nos permitirá movernos en la dirección de la pendiente en bajada y así disminuir el error.
+
+
+
+
+
+Existen diferentes tipos de optimización que se pueden utilizar para entrenar una Red Neuronal, estos son:
+
+- *Stochastic Gradient Descent*: Es una variante de la funcion de optmizacion _Gradient Descent_.
+Para cada elemneto se calcula el gradiente y se realiza un update de los pesos. Cada update esta basado en el gradiente calculado  de u nodo seleccionados de forma aleatoria del dataset. 
+
+
+
+
+
+#figure(
+  image("../imagenes/StochasticGradientDescent.jpg", width: 30%),
+  caption: [Stochastic Gradient Descent.],
+) <StochasticGradientDescent>
+
+
+
+  - *Batch Gradient Descent* : 
+  Es una mezcla entre el _Gradient Descent_ y el _Stochastic Gradient Descent_. 
+  
+  Para todo el dataset se calcula u promedio del gradiente y lueo se realiza el update de los pesos. El datset entero se usa en cada iteración del entrenamiento. El pesos de los parametros se update una vez por cada epoch.  Hay un risego de overfittig  ya que el modelo es expuesto de forma reptida eln el mismo orden.
+
+  #figure(
+    image("../imagenes/BatchGradientDescent.jpg", width: 30%),
+    caption: [Batch Gradient Descent.],
+  ) <BatchGradientDescent>
+
+(avece sno es weno meter todo el dataest de una porque: puede ser computacionalmente caro y ocurrir overfitiign???)
+  - *Mini Batch Gradient Descent*: Se divide el dataset en pequeños subconjuntos y se calcula el gradiente para cada uno de ellos y se realiza el update de los pesos.
+  Consiste en subdividir el dataset en sets más pequeños llamados mini-batches. El peso de los parametros se actualiza una vez por cada mini-batch. Se introduce un hiprpaametro para estre caso orrespondiente al tamaño del mini-batch.
+
+  #figure(
+    image("../imagenes/MiniBatchGradientDescent.jpg", width: 30%),
+    caption: [Batch Gradient Descent.],
+  ) <MiniBatchGradientDescent>
+
+  #figure(
+    image("../imagenes/optimizing.jpg", width: 60%),
+    caption: [Tipos de Entrenamineto.],
+  ) <SGD-BGDMBGD>
+
+
+
+-----------------------------------------------
+
 - *Descenso del Gradiente con Momentum*:
 Introduce un término de "momentum" en el cálculo del gradiente para evitar oscilaciones y hacer que el proceso de optimización sea más suave y eficiente. Ayuda a superar barreras locales en la función de pérdida.
 
@@ -317,42 +434,8 @@ Variante del descenso de gradiente con momentum que realiza una "anticipación" 
 
 - *RMSprop*: Root Mean Square Propagation, Ajusta la tasa de aprendizaje de forma adaptativa para cada parametro, utilizando el promedio de los cuadrados de los gradientes.
 
-
-
-
-Existen diferentes tipos de optimización que se pueden utilizar para entrenar una Red Neuronal, estos son:
-
-- *Stochastic Gradient Descent*: Para cada elemneto se calcula el gradiente y se realiza un update de los pesos. Cada update esta basado en el gradiente calculado  de u nodo seleccionados de forma aleatoria del dataset. 
-
-#figure(
-  image("../imagenes/StochasticGradientDescent.jpg", width: 30%),
-  caption: [Stochastic Gradient Descent.],
-) <StochasticGradientDescent>
-
-- *Batch Gradient Descent* : Para todo el dataset se calcula u promedio del gradiente y lueo se realiza el update de los pesos. El datset entero se usa en cada iteración del entrenamiento. El pesos de los parametros se update una vez por cada epoch.  Hay un risego de overfittig  ya que el modelo es expuesto de forma reptida eln el mismo orden.
-
-#figure(
-  image("../imagenes/BatchGradientDescent.jpg", width: 30%),
-  caption: [Batch Gradient Descent.],
-) <BatchGradientDescent>
-
-
-- *Mini Batch Gradient Descent*: Se divide el dataset en pequeños subconjuntos y se calcula el gradiente para cada uno de ellos y se realiza el update de los pesos.
-Consiste en subdividir el dataset en sets más pequeños llamados mini-batches. El peso de los parametros se actualiza una vez por cada mini-batch. Se introduce un hiprpaametro para estre caso orrespondiente al tamaño del mini-batch.
-
-#figure(
-  image("../imagenes/MiniBatchGradientDescent.jpg", width: 30%),
-  caption: [Batch Gradient Descent.],
-) <MiniBatchGradientDescent>
-
-#figure(
-  image("../imagenes/optimizing.jpg", width: 60%),
-  caption: [Tipos de Entrenamineto.],
-) <SGD-BGDMBGD>
-
-
 ==== Sampling
-
+#h(0.5cm)
 _Sampling_ (muestreo en español) en MAchine Learning coresponde a la tecnica utilizada para seleccionar subconjuntos de datos para entrenar o evaluar un modelo, en ve de utilizar el conjunto de datos completo. Esta tecnica se usa con le fin de : Cuando se trabaja con dataset muy grandes, como por ehjemplo..., es computacionalmente costoso porcesar todos los datos en cada iteración del enrenamiento, otra razon es  la generalización, al muestrear diferentes subconjuntos de datos en diferentes iteraciones, el modelo tiene más probabilidades de generalizar de forma correcta y no sobreajustar los datos.
 En GNN, el sampling es esencial debido a la naturaleza estructurada y muchas veces masiva de los grafos. 
 existen varias tecnicas especificas par atrabajar el sampling en este tipo de Redes Neuronales.
@@ -448,7 +531,7 @@ Entonces la idea es qu elos pesos no sean muy grandes o muy chicos  y asi no se 
 })
 
 ==== Regularización
-Una de las metas que s etiene al momento de enrenar un modelo es evitar el overfitting y por ende que pueda generalizar los resultados.
+#h(0.5cm)Una de las metas que s etiene al momento de enrenar un modelo es evitar el overfitting y por ende que pueda generalizar los resultados.
 Es decir logre classificar correctamente un dato nunca visto anteriormente.
 
 Existen diferentes tecnicas para lograr esto como :
@@ -478,7 +561,7 @@ PAPER: @DropGNN
 === Evaluación
 
 ==== Metricas de evaluación
-
+#h(0.5cm)
 - True Positive (TP): // TODO: Completar
 
 - True Negative (TN): // TODO: Completar
@@ -510,7 +593,7 @@ Existen diferentes etricas para medir el desempeño de lso modelos estos  son:
 
 
 == Internet
-Antes de abordar la definición de Internet, es crucial comenzar definiendo qué es una Red. Se trata de un conjunto de computadoras conectadas entre sí, que posibilita el intercambio de datos. En este contexto, una red puede ser visualizada como un grafo, donde los nodos representan los computadores y las aristas simbolizan las conexiones entre ellos que permiten el envío de mensajes.
+#h(0.5cm)Antes de abordar la definición de Internet, es crucial comenzar definiendo qué es una Red. Se trata de un conjunto de computadoras conectadas entre sí, que posibilita el intercambio de datos. En este contexto, una red puede ser visualizada como un grafo, donde los nodos representan los computadores y las aristas simbolizan las conexiones entre ellos que permiten el envío de mensajes.
 
 En el caso de Internet, se define como una extensa red creada mediante  la interconexión de redes más pequeñas coonocidas como Sistemas Autónomos (AS), los que consisten en grupos de máquinas interconectadas que comparten un mismo protocolo de enrutamiento. Estos AS están gestionadas por diversas organizaciones, que pueden ser desde proveedores de acceso a Internet (ISP), grandes empresas tecnológicas, universidades o incluso agencias gubernamentales. A cada AS, se le asigna un número único conocido como ASN, el cual es utilizado parar identificar al AS. Además, a cada AS se le asigna un conjunto de direcciones IP del cual es responsable que le lleguen los paquetes.
 
@@ -520,7 +603,7 @@ Es relevante destacar que los datos transmitidos a través de redes informática
 
 === Ruteo
 
-El ruteo consiste en la elección de caminos que seguirá un paquete dentro de una red, con el propósito de garantizar que la información que se transmite por Internet pueda llegar a su destino mediante la ruta más eficiente. Una red está formada por múltiples maquinas a las cuales se les llama nodo y las rutas que las unen. La comunicación entre dos nodos de la red se puede establecer mediante la interconexión de diferentes caminos, permitiendo así, conectar dos nodos que no tienen una conexión directa por medio de nodos intermedios. De esta forma el enrutamiento es el proceso de seleccionar la mejor ruta entre estos nodos en base a algún parámetro o reglas. 
+#h(0.5cm)El ruteo consiste en la elección de caminos que seguirá un paquete dentro de una red, con el propósito de garantizar que la información que se transmite por Internet pueda llegar a su destino mediante la ruta más eficiente. Una red está formada por múltiples maquinas a las cuales se les llama nodo y las rutas que las unen. La comunicación entre dos nodos de la red se puede establecer mediante la interconexión de diferentes caminos, permitiendo así, conectar dos nodos que no tienen una conexión directa por medio de nodos intermedios. De esta forma el enrutamiento es el proceso de seleccionar la mejor ruta entre estos nodos en base a algún parámetro o reglas. 
 
 Un enrutador o router es un dispositivo de red que se conecta a otros dispositivos y redes. Son los encargados de seleccionar las rutas que irán tomando los datos enviados.  
 
@@ -534,7 +617,7 @@ Existen dos tipos de enrutamiento: estático y dinámico. El enrutamiento estát
 
 === Ruteo Interno
 
-Se encarga de gestionar las rutas a seguir de un paquete dentro de un Sistema Autónomo. En este contexto los routers ocupan protocolos de enrutamiento interno para intercambiar la información del estado de la red y las rutas disponibles. 
+#h(0.5cm)Se encarga de gestionar las rutas a seguir de un paquete dentro de un Sistema Autónomo. En este contexto los routers ocupan protocolos de enrutamiento interno para intercambiar la información del estado de la red y las rutas disponibles. 
 Entre los protocolos de ruteo interno se tiene:
 
 - OSPF (Open Shortest Path First): Utiliza el algoritmo de Dijkstra para determinar las rutas más cortas entre nodos@OSPF.
@@ -546,7 +629,7 @@ Entre los protocolos de ruteo interno se tiene:
 
 === Ruteo Externo
 
-Se centra en la gestión de rutas entre los diferentes Sistemas Autónomos que conforman el Internet. En este caso, se usan protocolos de enrutamiento externo, que al igual que los protocolos de enrutamiento interno se encarga de intercambiar la información de las rutas disponibles, permitiendo así que paquetes viajen de manera más efectiva. 
+#h(0.5cm)Se centra en la gestión de rutas entre los diferentes Sistemas Autónomos que conforman el Internet. En este caso, se usan protocolos de enrutamiento externo, que al igual que los protocolos de enrutamiento interno se encarga de intercambiar la información de las rutas disponibles, permitiendo así que paquetes viajen de manera más efectiva. 
 Algunos protocolos de enrutamiento externos son:
 
 - BGP (Border Gateway Protocol): Tiene un enfoque de vector de distancia. Utiliza un enfoque de vector de distancia y toma decisiones basadas en políticas de red para intercambiar información eficientemente@RFC-BGP.
@@ -558,7 +641,7 @@ Algunos protocolos de enrutamiento externos son:
 ==== Border Gateway Protocol (BGP)
 
 
-El Border Gateway Protocol (BGP) es un protocolo de enrutamiento externo, que se utiliza para intercambiar información de rutas entre los diferentes Sistemas Autónomos que conforman el Internet ( @BGP-SA ). Toma decisiones de enrutamiento basadas en políticas, reglas de Red y el camino más corto (AS PATH)@RFC-BGP.
+#h(0.5cm)El Border Gateway Protocol (BGP) es un protocolo de enrutamiento externo, que se utiliza para intercambiar información de rutas entre los diferentes Sistemas Autónomos que conforman el Internet ( @BGP-SA ). Toma decisiones de enrutamiento basadas en políticas, reglas de Red y el camino más corto (AS PATH)@RFC-BGP.
 
 
 El protocolo BGP comienza con un handshake, el cual se hace entre dos vecinos BGP, donde los AS se ponen de acuerdo en cuanto a configuraciones y soporte que tendrán por ejemplo si soportaran IPv4 o IPv6 o ambas. Una vez establecida la conexión estas intercambian información mediante UPDATES donde se pueden agregar o quitar caminos. De este modo, los vecinos actualizarán sus tablas de rutas y propagarán estos mismos cambios a sus vecinos.
@@ -571,3 +654,30 @@ De este, modo BGP elige caminos mediante la determinación del camino más corto
   image("../imagenes/topologiaBGP.png", width: 40%),
   caption: [Grafo de una red con 5 Sistemas Autónomos con 4 direcciones IP cada uno.],
 ) <BGP-SA>
+
+
+
+= Mas inifo que no se donde pondera
+== INTERNETT
+#h(0.5cm)
+Paper: The (In)Completeness of the Observed Internet AS-level Structure (2010)
+
+Hierarchical structure of the logical Internet graph (2001)
+Internet Topology Research Redux (2013)
+Internet path inflation due to policy routing (2001)
+Inferring AS Relationships Beyond Counting Edges (2004)
+CORIA — Analyzing internet connectivity risks using network graphs (2017)
+IXPs: mapped? (2009)
+
+
+
+En cuatnto a clasificacion con gnn se ha inferido:
+- AS_rank_continent
+- AS_hegemony
+- AS_rank_continent
+- link prediction
+
+AS to ORG?
+
+
+-ver si ahy algun clusting en base a lso embeddings que se crean?
