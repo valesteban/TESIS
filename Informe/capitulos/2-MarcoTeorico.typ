@@ -350,20 +350,19 @@ ALgunos de estos son:
 - AdaDelta
 - Adam (Adaptive Moment Estimation)
 
+----------------------------------------------------
+// Definición GD
+*_Gradient Descent o Bacth Gradient Descent_*
+Es el algoritmo de optimización más basico y común.
+comienza en un punto aleatorio y se mueve en la direccion opusta del gradiente de la función de perdida.
+Los "pasos" que van dando para acercarse a un minimo están dados por el valor de _learnin rate_  en cada iteración.
+Se le pasa todo el dataset antes de calcular el gradiente y actualizar los pesos. Es decir se espera el paso de un forward de un epoch antes del _backpropagation_ y actualización de los pesos. 
+Hay un risego de overfittig  ya que el modelo es expuesto de forma reptida eln el mismo orden.
 
+// Explicación Figura
+En @gradientDescent muestra una como el calculo del gradiente nos permite ir avanzando en la función convexa a un minimo, lugar donde se espera se ajuste de mejor manera los pesos de los parametros de la Red.
+Se calcula el gradiente de la función de pérdida utilizando todo el conjunto de datos de entrenamiento antes de actualizar los parámetros. Esto puede requerir una gran cantidad de memoria además de ser más lento. Puede ser csotoso si el dataset es muy grande (necesita realizar calculos sobre todos los ejemplos antes de ajstar los parametros).
 
-*_Gradient Descent_*
-Es el algoritmo de optimización más común.
-Este comienza en un punto aleatorio y se mueve en la dirección del gradiente negativo de la función en ese punto. El tamaño del paso que se da en cada iteración es controlado por el hiperparametro _learning rate_.
-A contuniuación  @gradientDescent muestra una como el calculo del gradiente nos permite ir avanzando en la función convexa a un minimo, lugar donde se espera se ajuste de mejor manera los pesos de los parametros de la Red.
-Se calcula el gradiente de la función de pérdida utilizando todo el conjunto de datos de entrenamiento antes de actualizar los parámetros.
-
-PROS:
-- Facil de entender e implementar
-CONTRAS:
-- Puede quedarse atrapado en un mínimo local.puede quedar atrapado en mínimos locales o puntos de silla (saddle points), especialmente en problemas de optimización no convexos comunes en el aprendizaje profundo.
-- Seleccionar un _learning rate_ adecuado. Al ser un hiperparametro debe ser encontrado por medioo de experimentación.
-- It requires large memory and it is computationally expensive.
 
 Este esta dado por la siguiente formual matematica,donde se actualizan los nuevos pesos:
 
@@ -373,72 +372,11 @@ $
 
 Donde $w$ corresponde a los pesos de los parametros del modelo,  $alpha$ el _learning rate_ y $gradient_(w) J(w)$ el gradiente de la función de perdida con respecto a los pesos de la Red.
 
-// - Gradient Descent iteratively reduces a loss function by moving in the direction opposite to that of steepest ascent.
-// - It is dependent on the derivatives of the loss function for finding minima.
-// - uses the data of the entire training set to calculate the gradient of the cost function to the parameters which requires large amount of memory and slows down the process. 
-// - radient descent only works when our function is differentiable everywhere.
-
 #figure(
   image("../imagenes/Deep-learning-optimization-algorithms-1.png", width: 60%),
   caption: [visualizaacion optimixacion del aLgoritmo de Gradient Descnt aolicada a una funcion convexa.],
 ) <gradientDescent>
-
-
-
-
-
-------------------------------------------------------
-
-- *Stochastic Gradient Descent*: 
-Es una variante de la funcion de optmizacion _Gradient Descent_.
-Para cada elemneto se calcula el gradiente y se realiza un update de los pesos. 
-Introduce un punto de aleatoriedad a la optimización del modelo, de esta forma no quedar en un minimo local, además de acelerar la convergencia.
-Para ello seleccionados de forma aleatoria del dataset. 
-
-// Instead of calculating the gradient of the cost function over the entire training data, SGD computes the gradient based on a single randomly selected training example.
-
-Su formula esta dada por:
-$
-w = w - alpha * gradient_(w) J_(i)(w)
-$
-Donde $w$ representa los parametros del modelo, $alpha$ el _learning rate_ y $gradient_(w) J_(i)(w)$ el gradiente de la funcion de perdida para el i-esimo ejemplo de entrenamiento con respecto a los pesos.
-#figure(
-  image("../imagenes/StochasticGradientDescent.jpg", width: 30%),
-  caption: [Stochastic Gradient Descent.],
-) <StochasticGradientDescent>
-
-
-#figure(
-  image("../imagenes/SGD1.png", width: 30%),
-  caption: [Stochastic Gradient Descent.],
-) <StochasticGradientDescentVisualization>
-
-
-
-PROS:
-  - Frequent updates of model parameter
-  - Requires less Memory.
-  - Allows the use of large data sets as it has to update only one example at a time.
-
-CONTRAS:
-  - The frequent can also result in noisy gradients which may cause the error to increase instead of decreasing it.
-  - High Variance.
-  - Frequent updates are computationally expensive.
-
---------------------------------------
-  - *Batch Gradient Descent* : 
-  Es una mezcla entre el _Gradient Descent_ y el _Stochastic Gradient Descent_. 
-  
-  Para todo el dataset se calcula u promedio del gradiente y lueo se realiza el update de los pesos. El datset entero se usa en cada iteración del entrenamiento. El pesos de los parametros se update una vez por cada epoch.  Hay un risego de overfittig  ya que el modelo es expuesto de forma reptida eln el mismo orden.
-
-  PROS:
-  - It leads to more stable convergence.
-  - more efficient gradient calculations.
-  - Requires less amount of memory.
-
-  CONTRAS:
-  - Mini-batch gradient descent does not guarantee good convergence,
-  - If the learning rate is too small, the convergence rate will be slow. If it is too large, the loss function will oscillate or even deviate at the minimum value.
+ 
   #figure(
     image("../imagenes/BatchGradientDescent.jpg", width: 30%),
     caption: [Batch Gradient Descent.],
@@ -450,13 +388,37 @@ CONTRAS:
     caption: [Batch Gradient Descent.],
   ) <BatchGradientDescentVisualization>
 
-(avece sno es weno meter todo el dataest de una porque: puede ser computacionalmente caro y ocurrir overfitiign???)
+
+------------------------------------------------------
+// Definición SGD
+- *Stochastic Gradient Descent*: 
+Es una variante de la funcion de optmizacion _Gradient Descent_ a diferencia de  que esta actualización se realiza para cada elemento, es decir, calcula el gradiente y se realiza un update de los pesos para cada muestra del dataset.
+
+Es por esto que los parámetros se ajustan con más frecuencia, lo que peude hacer que sea más rapido que SG y por eende converger antes. Cabe mencionar que debido a la aleatoriedad de las muestras y diferencia entre estas, la trayectoria de la convergencia puede ser ruidosa, aunqye ayudando a no estancarse en minimos locales . 
+
+Su formula esta dada por:
+$
+w = w - alpha * gradient_(w) J_(i)(w)
+$
+Donde $w$ representa los parametros del modelo, $alpha$ el _learning rate_ y $gradient_(w) J_(i)(w)$ el gradiente de la funcion de perdida para el i-esimo ejemplo de entrenamiento con respecto a los pesos.
+#figure(
+  image("../imagenes/MiniBatchGradientDescent.jpg", width: 30%),
+  caption: [Stochastic Gradient Descent.],
+) <StochasticGradientDescent>
+
+
+#figure(
+  image("../imagenes/SGD1.png", width: 30%),
+  caption: [Stochastic Gradient Descent.],
+) <StochasticGradientDescentVisualization>
+
+
 -----------------------------------------------
-  - *Mini Batch Gradient Descent*: Se divide el dataset en pequeños subconjuntos y se calcula el gradiente para cada uno de ellos y se realiza el update de los pesos.
-  Consiste en subdividir el dataset en sets más pequeños llamados mini-batches. El peso de los parametros se actualiza una vez por cada mini-batch. Se introduce un hiprpaametro para estre caso orrespondiente al tamaño del mini-batch.
+  - *Mini Batch Gradient Descent*: 
+  El dataset es dividido en subconjuntos llamados _mini.batches_. La actualización de los pesos de los parametros se actualiza por mini-batch. Se introduce un nuevo hiperparámetro correspondiente al tamaño de los _mini-batches_.
 
   #figure(
-    image("../imagenes/MiniBatchGradientDescent.jpg", width: 30%),
+    image("../imagenes/StochasticGradientDescent.jpg", width: 30%),
     caption: [Batch Gradient Descent.],
   ) <MiniBatchGradientDescent>
 
@@ -470,8 +432,8 @@ CONTRAS:
 -----------------------------------------------
 
 - *Descenso del Gradiente con Momentum*:
-Introduce un término de "momentum" en el cálculo del gradiente para evitar oscilaciones y hacer que el proceso de optimización sea más suave y eficiente. Ayuda a superar barreras locales en la función de pérdida.
-
+Introduce un término de "momentum" (inercia) en el cálculo del gradiente para evitar oscilaciones y hacer que el proceso de optimización sea más suave y eficiente.
+Ayuda a no quedar atrapado en minimos locales  de la función de perdida.
 
 
   #figure(
@@ -485,136 +447,124 @@ $
 nu = nu*eta - alpha * gradient_(w) J(w)
 $
 
-// FIXEM: DEcir que es cada cosa en la formula
+Donde $eta$ se define como el momentum, $alpha$ el _learning rate_ y $gradient_(w) J(w)$ el gradiente de la función de perdida con respecto a los pesos de la Red. Con esto tenemos que cada "paso" depende de los pasos anteriores ayudando a reducir ruido en lal convergencia.
+-------------------------------------------------
+- *AdaGrad(Adaptive Gradient Descent)*: 
+
+Ajusta dinamiacmente durante el valor del _larnign rate_. Asigna un _learning rate_ para cada paŕametro del modelo, basandose en al magnitud d elos gradientes previos. 
+A medida que se va iterando en el entrenamiento, s ev aacumulando el cuadrado de los gradinetes de cada parámetro. Recordando asi lo que ha cambiado el gradiente a lo largo del tiempo. Así  parámetros con gradientes grandes tendrán una tasa de aprendizaje reducida, lo que previene actualizaciones grandes, mientras que los parámetros con gradientes pequeños se actualizan más rápidamente. //FIXME: Es un copy paste de chatgpt
+
+Es ineficiente para tareas que requieres un entrenamiento largo, debido a que latasa de entrenamiento irá decayendo haciendo que luego se vuelva muy pequeña.
 
 
-PROS:
-- Momentum helps to reduce the noise.
-- Exponential Weighted Average is used to smoothen the curve.
+-----------------------------------------------
+- *AdaDelta:* Es una mejora sobre AdaGrad, la cual toma la misma formula, pero en vez de tomar todo el historial de derivadas al cuadrado, lo toma en una ventana de tiempo ($delta$). //ejemplo, toma el catch de las ultimas 5 actualizaciones 
 
-CONTRAS: 
-- Trabja con un hiperparametro adicional.
-
-------------------------------------------------
-- *Descenso de Gradiente Estocástico con Nesterov Momentum*:
-Variante del descenso de gradiente con momentum que realiza una "anticipación" antes de calcular el gradiente. Mejora la velocidad de convergencia en algunas situaciones.
+// ------------------------------------------------
+// - *RMSprop*: Root Mean Square Propagation, Ajusta la tasa de aprendizaje de forma adaptativa para cada parametro, utilizando el promedio de los cuadrados de los gradientes.
+// Incorpora el concepto de Decain Rate o decain catch, introduce una nueva variable d , ell cual es un valor que multiplicamos por el catch para enfatizar que queremos tomar en cuenta los valores más recientes y disminuir el impacto de los valores más antigusos
+//FIXME: yo creo que lo voy a sacar
 
 ----------------------------------------------
-- *Adam*: Adaptive Moment Estimation,Ajusta dinamicamente la tasa de aprendizaje para cada parametro , utilizando el momentum de primer y segundo orden de los gradientes.
-
-Adam(Adaptive Moment Estimation)
-
-Adam optimizer is one of the most popular and famous gradient descent optimization algorithms. It is a method that computes adaptive learning rates for each parameter. It stores both the decaying average of the past gradients , similar to momentum and also the decaying average of the past squared gradients , similar to RMS-Prop and Adadelta. Thus, it combines the advantages of both the methods.
+- *Adam (Adaptive Moment Estimation):* Uno de los optimizadores más utilizados, ajusta dinamicamente el _learning rate_ para cada parametro. Adam toma en cuenta la evolución del _learnig rate_ y la evolución de los pesos por medio de la media y varianza y los incorpora al caluclo de los nuevos pesos. Combina las ideas de  AdaGrad y RMSprop. 
 
 
-Advantages of Adam
+$
+"pesos" = "pesos" - ("Momentum y varianza combinados")
+$
 
-    Easy to implement
-    Computationally efficient.
-    Little memory requirements.
-------------------------------
-- AdaGrad(Adaptive Gradient Descent)
 
-In all the algorithms that we discussed previously the learning rate remains constant. The intuition behind AdaGrad is can we use different Learning Rates for each and every neuron for each and every hidden layer based on different iterations.
+  // (m , la media de los pesos  alo largo del timmepo ) (v, como han variado esos pesos a lo largo del tiempo  ) 
 
-Advantages of AdaGrad
+// ------------------------------
+// ----------------------------------------------------
 
-    Learning Rate changes adaptively with iterations.
-    It is able to train sparse data as well.
+// - *Descenso de Gradiente Estocástico con Nesterov Momentum*:
+// Variante del descenso de gradiente con momentum que realiza una "anticipación" antes de calcular el gradiente. Mejora la velocidad de convergencia en algunas situaciones.
+// Los más utilizados son stochastic Gradient Descent, Adam y RMSprop. SGD es la que más control nos d asobre la Red Neuronal a pesar de ser la menos adaptativo ya qie ADAM y RMSprop son adaptativos y se ajustan a los datos sin nosotros tener mucho control sobre ellos..
 
-Disadvantage of AdaGrad
-
-    If the neural network is deep the learning rate becomes very small number which will cause dead neuron problem.
------------------------------------------------
-- *RMSprop*: Root Mean Square Propagation, Ajusta la tasa de aprendizaje de forma adaptativa para cada parametro, utilizando el promedio de los cuadrados de los gradientes.
-
-----------------------------------------------------
-
+// ---------------------------------------------
 *¿Cuál es la importancia del _Learning Rate_?*
 
-El _learning rate_ es un hiperparámetro. Se seleciona manualmente. Controla los "pasos" que se van dando en cada iteracion para acercarse al minimo de la funcion de perdida. Un learning rate muy pequeño puede hacer que el modelo tarde mucho en converger, ademas de quedarse en un minimo local. sin embargo uno muy grande puede hacer que el modelo no converga o incluso diverga.
-
-
-
-How big/small the steps are gradient descent takes into the direction of the local minimum are determined by the learning rate, which figures out how fast or slow we will move towards the optimal weights.
+El _learning rate_ es un hiperparámetro lo que quiere decir que es selecionado manualmente, este ajusta la velocidad a la que vamos a ir dando los "pasos" en cada iteracion para acercarse al minimo de la funcion de perdida para aquellos optimizadores que no lo haedn dinamicamente durante el entrenamiento. La impirtancia d eeste radica en encontrar un valor optimo, de ocupar un _learning rate_ muy pequeño puede hacer que el modelo tarde mucho en converger, ademas de quedarse en un minimo local, de lado contrario uno muy grande puede hacer que el modelo no converga o incluso diverga.
 
 #figure(
   image("../imagenes/learningRate.png", width: 60%),
   caption: [visualizaacion learning Rate grande y chico.],
 ) <learningRate>
 
-==== Sampling
+//FIXME: Agregar descipción imagen
+==== Sampling (Muestreo)
 
 
 #h(0.5cm)
-_Sampling_ (muestreo en español) en Machine Learning coresponde a la tecnica utilizada para seleccionar subconjuntos de datos para entrenar o evaluar un modelo, en ve de utilizar el conjunto de datos completo. Esta tecnica se usa con le fin de : Cuando se trabaja con dataset muy grandes, como por ehjemplo..., es computacionalmente costoso porcesar todos los datos en cada iteración del enrenamiento, otra razon es  la generalización, al muestrear diferentes subconjuntos de datos en diferentes iteraciones, el modelo tiene más probabilidades de generalizar de forma correcta y no sobreajustar los datos.
+_Sampling_ (muestreo en español) en Machine Learning coresponde a la tecnica utilizada para seleccionar subconjuntos de datos para entrenar o evaluar un modelo, en ve de utilizar el conjunto de datos completo. 
+Esta tecnica se puede susar por diferentes motivos como por ejemplo dataset muy grandes y donde es computacionalmente costoso porcesar todos los datos en cada iteración del entrenamiento, otra razon es  la generalización, al muestrear diferentes subconjuntos de datos en diferentes iteraciones, el modelo tiene más probabilidades de generalizar de forma correcta y no sobreajustar los datos.
 
 #figure(
   image("../imagenes/Sampling.png", width: 60%),
   caption: [Sampling.],
 ) <Sampling>
 
-// “Sampling is a method that allows us to get information about the population based on the statistics from a subset of the population (sample), without having to investigate every individual”
-
-
 Existen diferentes tipos de muestreo, algunos de ellos son:
 
 
-+ *Random Sampling:* Random sampling is the simplest form of sampling in machine learning. It involves selecting data points randomly from a dataset with no specific pattern. This method assumes that every data point in the dataset has an equal chance of being selected.
++ *Random Sampling:* Es la tecnica más simple de muestreo en Machin eLearning. Consiste en  seleccionar muestras de forma aleatoria del dataset, in usar nungun patrón especifico. Este metodo asume que todas las muestras del dataset son igual de importante y la misma probabilidad de ser seleccionada.
 
-+ *Stratified Sampling:* Stratified sampling is used when the dataset contains subgroups and it’s important to include samples from each subgroup. In this method, the population is divided into homogeneous subgroups called strata, and the right number of instances is sampled from each stratum to guarantee that the sample is representative of the entire population. 
+
+
+
+
++ *Stratified Sampling:* 
+Esta tecnica de muestreo se usa cuando queremos teenr que existan de forma equilibrada los distintos subconjuntos/estratos de datos presente en el entrenmaiento, validacion y testing. 
+Esta tecnica se usa especialmenet en tareas de clasificación para datasets desbalanceados, donde se hay mas muestras de un tipo que de otra.
+Para estoel dataset se divide en estartos, luego dentro de cada uno de estos subgrupos se seelccionan muestras al alazar en las mismas proporciones e que están presentes en el dataset completo.
+
+Algunas de estás tecnicas son:
+
 
 #figure(
   image("../imagenes/stratifiedSampling.png", width: 60%),
   caption: [Cluster sampling.],
 ) <stratifiedSampling>
 
++ *Systematic Sampling:* Es un metodo de muestreo probabilistico.
 
-// In this type of sampling, we divide the population into subgroups (called strata) based on different traits like gender, category, etc. And then we select the sample(s) from these subgroups. We use this type of sampling when we want representation from all the subgroups of the population. However, stratified sampling requires proper knowledge of the characteristics of the population. For example, a researcher looking to analyze the characteristics of people belonging to different annual income divisions will create strata (groups) according to the annual family income. Eg — less than $20,000, $21,000 — $30,000, $31,000 to $40,000, $41,000 to $50,000, etc. By doing this, the researcher concludes the characteristics of people belonging to different income groups. Marketers can analyze which income groups to target and which ones to eliminate to create a roadmap that would bear fruitful results.
+Primero se ordena el dataset de manera secuencial en base algun criteorio. Luego se calculo el intervalo de muestreo $k = frac(N,n)$ $N$ nuemro total de elementos en el conjunto y $n$ numero de muestras  aseleccionar. Se selecciona asi un punto de partida aleatorio y de ahi se seleccionan muestr as a intervalos regulares, saltando k elemntoscada vez, hasta completar las muestras deseadas.
+//FIXME: Asegurarse que estoe s correcto, especialmente la primera arte.
 
-+ *Systematic Sampling:* Systematic sampling is a type of sampling that selects data points according to a fixed interval, known as the sampling interval. For example, you might select every 10th data point in the dataset. 
 
-// Systematic sampling is a statistical method that researchers use to zero down on the desired population they want to research. Researchers calculate the sampling interval by dividing the entire population size by the desired sample size. Systematic sampling is an extended implementation of probability sampling in which each member of the group is selected at regular periods to form a sample.
 
-// Systematic sampling is defined as a probability sampling method where the researcher chooses elements from a target population by selecting a random starting point and selects sample members after a fixed ‘sampling interval.’
++ *Cluster Sampling:* Tecnica usada cuando el conjunto de datos es muy grande y naturalemnet está separado por grupos, donde luego se seleccionan algunso de estos conglomerados completos de manera aleatoria. A diferencia de stratified sampling donde los estratos son homogeneos dentro de un grupo, en cluster sampling estos son más heterogeneos , es decir pueden ser diferentes entre si , no se seleccionan induvidualemnte las muestras, sino que se selecciona un grupo completo.
+Es util cuando naturalmente las muetras estan divididas en conglomerados y son representativas del global.
+Por ejemplo: queremos obtener un sampling de poblacion, y donde cada cluster supone un grupo de personas que viven en una misma area. Se seleccionan algunos de estos clusters de manera aleatoria y se toman todas las muestras de este grupo para el estudio.
 
-// Here are the types of systematic sampling:
 
-//     Systematic random sampling
-//     Linear systematic sampling
-//     Circular systematic sampling
-
-+ *Cluster Sampling:* Cluster sampling involves dividing the population into clusters, then randomly selecting entire clusters. This can reduce costs and increase efficiency of sampling. 
-
-// In a clustered sample, we use the subgroups of the population as the sampling unit rather than individuals. The population is divided into subgroups, known as clusters, and a whole cluster is randomly selected to be included in the study. This type of sampling is used when we focus on a specific region or area.
 #figure(
   image("../imagenes/clusterSampling.png", width: 60%),
   caption: [Cluster sampling.],
 ) <clusterSampling>
 
-+ *Oversampling and Undersampling:* 
-oversampling and undersampling are techniques used to address class imbalance in a dataset. Oversampling involves increasing the number of instances in the minority class, while undersampling involves reducing the number of instances in the majority class. 
 
-+ *Reservoir Sampling:* Reservoir sampling is used for randomly sampling k items from a stream of data of unknown size, in a single pass. 
+Para el caso de Graph Neural Network existen tecnicas especificas debido a que estamos trabajando con grafos y las muestras seleccionadas deoendiendo de la tarea serán nodos que aun asi estan conectados a otros nodos, es decri a apesar q se selecionan unos nodos y otros no,e stos forman parte de una estructura completa q al momento del entrenamiento se verán afectada por sus vecinos.
+Sampling en GNN es esencial debido a la naturaleza estructurada y muchas veces masiva de los grafos.
+Las tecnicas utilizadsd en GNN  se pueden dividir en 4 categorias principales: Random Node Sampling, Neighbor Sampling, Layer Sampling y Subgraph Sampling.
 
-Para el caso de GNN...
-En GNN, el sampling es esencial debido a la naturaleza estructurada y muchas veces masiva de los grafos. 
-existen varias tecnicas especificas par atrabajar el sampling en este tipo de Redes Neuronales.
-
-"Sampling methods for efficient training of graph convolutional networks: A survey" 
-https://arxiv.org/pdf/2103.05872
+//TODO: Leer esto:
+//  "Sampling methods for efficient training of graph convolutional networks: A survey" 
+// https://arxiv.org/pdf/2103.05872
 
 
-https://cogdl.ai/gnn2022/courseware/L5_sampling_based_graph_neural_networks.pdf
+// https://cogdl.ai/gnn2022/courseware/L5_sampling_based_graph_neural_networks.pdf
 
-+ *Random Node Sampling:* Se selecciona de forma aleatotia un subset de nodos del grafoo completo. Reduce el costo computacional en comparacion a entrenar todos los nodos de un grafo. Hay redundancia al calcular los embeddings si esque dos nodos comparten el mismo vecino, el embedidng de dicho nodo será calculado dos veces.
++ *Random Node Sampling:* Se selecciona de forma aleatotia un subset de nodos del grafoo completo. Reduce el costo computacional en comparacion a entrenar todos los nodos de un grafo, sin emabrgo habrá redundancia al calcular los embeddings si esque dos nodos comparten el mismo vecino, el embedidng de dicho nodo será calculado dos veces. 
 
-+ *Neighbor Sampling:* Se selecciona un numero expecifico de vecinos para cada nodo en cada capa de la Red. Esto evita 
++ *Neighbor Sampling:* Se selecciona un numero expecifico de vecinos para cada nodo en cada capa de la Red. Esto permite reducir el costo computacional y la redundancia en el calculo de los embeddings, ya que es menos probable que en coparscion a  la tecnica anterior haya redndancia a la hora de calcular los embeddings de un mimso vecino. 
 
 PAPERS: GraphSAGE@GraphSAGE, 
 PAPERS: PinSAGE@PinSAGE, @VRGCN
 
-+ *Layer Sampling:* Realiza un uestreo por capas de forma aleatoria e indeoendetie en tre capas. Sin embaro esto puede causr tener nodos aisaldos. Tiene como objetivo evitar el calculo redundante en el muestrei po rnodos. Permute un uso más eficiente de memoria.
++ *Layer Sampling:* Realiza un muestreo por capas de forma aleatoria  entre las capas. Una desventaja de esta tecnica es que peude causar nodos aisaldos. Tiene como objetivo evitar el calculo redundante en el muestrei po rnodos. Permute un uso más eficiente de memoria.
 
 
 Ejemplo de Papers FstGCN@FastGCN, Adaptative Sampling@AdaptiveSampling, LADIES@LADIES
@@ -625,7 +575,7 @@ PAPERS: GraphSAINT @GraphSAINT, ClusterGCN @ClusterGCN
 
 
 ¿Qué es Bacth Normalization?
-Tien el fin de estabilizar el training d ela GNN.
+Tiene el fin de estabilizar el training de la GNN.
 Reescala cada salida de las layers ara que su promedio y varianza a traves del batch $B$ 
 
 $
@@ -644,21 +594,14 @@ $
 h_i <-- gamma h_i + delta
 $
 
-Normalizar los node embeddingsusando el mean y variance calculado en el paso anterior.
-
-Beneficios de Batch Normalization: 
-Podekos ocupar learn rates más grandes. BN hace que cambie la loss de forma más smoothly  lo que conlleva a ques epuedan ocupar learning rates más grandes.
-
-
-
-Por otro lado BN injetca ruido al proceso de training porque la onormalizacion depende de las estadistcias de todo el batch.
-Nos permite controlar la varianza de los embeddings aprendidos en re capas consecutivas de la GNN..
+Normalizar los node embeddings usando el mean y variance calculado en el paso anterior.
 
 
 #figure(
   image("../imagenes/BNLayer.jpg", width: 60%),
   caption: [Explciacion FIXME:.],
 ) <SGD-BGDMBGD>
+
 ¿Qué pasa si este weigh termina siendo muy grande (encomparación a otros)?
 Hara que la salida d ela neurona sea muy grande, afectando asi a la siguente capa, causando inestabilidad en el training.
 Nomlamente se normaliza los inputs  y entonces por que no normlaizar entre capas?
@@ -689,44 +632,63 @@ Entonces la idea es qu elos pesos no sean muy grandes o muy chicos  y asi no se 
   })
 })
 
-¿Cuál es la importancia de *sampling* en Machine Learning?
+// ¿Cuál es la importancia de *sampling* en Machine Learning?
 
- 2. Enhancing Model Performance
+//  2. Enhancing Model Performance
 
-Sampling techniques directly impact the performance of machine learning models. By using appropriate sampling methods, data scientists can ensure that their models are trained on balanced and representative data, which is crucial for building accurate and reliable predictive models. 
+// Sampling techniques directly impact the performance of machine learning models. By using appropriate sampling methods, data scientists can ensure that their models are trained on balanced and representative data, which is crucial for building accurate and reliable predictive models. 
 
- 3. Tackling Class Imbalance
+//  3. Tackling Class Imbalance
 
-Many real-world problems involve imbalanced classes (e.g., fraud detection, disease diagnosis), where one class is significantly underrepresented in the dataset. Sampling methods like stratified sampling, oversampling, and undersampling are essential for addressing these imbalances, helping to improve model sensitivity to minority classes and thus, their overall performance. 
+// Many real-world problems involve imbalanced classes (e.g., fraud detection, disease diagnosis), where one class is significantly underrepresented in the dataset. Sampling methods like stratified sampling, oversampling, and undersampling are essential for addressing these imbalances, helping to improve model sensitivity to minority classes and thus, their overall performance. 
 
- 4. Efficiency and Cost-effectiveness
+//  4. Efficiency and Cost-effectiveness
 
-Some sampling techniques can make the data handling process more efficient and cost-effective. For example, cluster sampling can reduce the need for data collection and processing resources when the population is geographically dispersed or when data collection is expensive. 
- 5. Compliance with Data Regulations
+// Some sampling techniques can make the data handling process more efficient and cost-effective. For example, cluster sampling can reduce the need for data collection and processing resources when the population is geographically dispersed or when data collection is expensive. 
+//  5. Compliance with Data Regulations
 
-In industries where data privacy and compliance are critical (e.g., healthcare, finance), sampling methods can help in working with anonymized or reduced subsets of data, ensuring that data scientists can develop and test models within the confines of regulatory frameworks. 
+// In industries where data privacy and compliance are critical (e.g., healthcare, finance), sampling methods can help in working with anonymized or reduced subsets of data, ensuring that data scientists can develop and test models within the confines of regulatory frameworks. 
 
-6. Scalability and Big Data Applications
+// 6. Scalability and Big Data Applications
 
-With the advent of big data, techniques such as reservoir sampling become indispensable for data scientists. They allow for the processing of streaming data or very large datasets that cannot be fully loaded into memory or storage, enabling the development of scalable algorithms and applications.
-7. Informed Decision-making
+// With the advent of big data, techniques such as reservoir sampling become indispensable for data scientists. They allow for the processing of streaming data or very large datasets that cannot be fully loaded into memory or storage, enabling the development of scalable algorithms and applications.
+// 7. Informed Decision-making
 
-Sampling is a crucial step in exploratory data analysis. Data scientists must make informed decisions about which data to collect and how to analyze it. Understanding sampling methods allows them to derive insights and make predictions that are representative of the broader population or phenomenon under study.
-8. Building Trust in Machine Learning Models
+// Sampling is a crucial step in exploratory data analysis. Data scientists must make informed decisions about which data to collect and how to analyze it. Understanding sampling methods allows them to derive insights and make predictions that are representative of the broader population or phenomenon under study.
+// 8. Building Trust in Machine Learning Models
 
-Proper sampling can lead to more robust and interpretable models. When stakeholders see that models are built on sound statistical foundations, they are more likely to trust and adopt machine learning solutions.
-9. Continuous Learning and Adaptation
+// Proper sampling can lead to more robust and interpretable models. When stakeholders see that models are built on sound statistical foundations, they are more likely to trust and adopt machine learning solutions.
+// 9. Continuous Learning and Adaptation
 
-Industry data is dynamic, and models may need to be updated or retrained periodically. Sampling methods can help in creating efficient pipelines for continuous learning from new data without the need to retrain on the entire dataset.
+// Industry data is dynamic, and models may need to be updated or retrained periodically. Sampling methods can help in creating efficient pipelines for continuous learning from new data without the need to retrain on the entire dataset.
 
-In summary, knowledge of sampling techniques is fundamental for data scientists to handle data effectively, build better models, ensure compliance, and make informed decisions, which are all critical components of their role in the industry.
+// In summary, knowledge of sampling techniques is fundamental for data scientists to handle data effectively, build better models, ensure compliance, and make informed decisions, which are all critical components of their role in the industry.
 
 
 ==== Regularización
-#h(0.5cm)Una de las metas que s etiene al momento de enrenar un modelo es evitar el overfitting y por ende que pueda generalizar los resultados.
-Es decir logre classificar correctamente un dato nunca visto anteriormente.
+#h(0.5cm)Una de las metas que se tiene al momento de entrenar un modelo es evitar el overfitting y por ende que pueda generalizar los resultados de forma optima.
+Es decir logre la tarea correctamente en un dato nunca visto anteriormente.
 
-Existen diferentes tecnicas para lograr esto como :
+
+
+// FIXEM: No creo que agrege esto, por mientras lo dejare
+Uno de los obstaculos que ocuren engran medida causando un mal desempeño de u nmodelo es el sobreajuste y subajuste.
+Este se puede ver en @EvaluationClassificationRegresion
+
+#figure(
+  image("../imagenes/EvaluationClassificationRegresion.png", width: 60%),
+  caption: [Evaluation.],
+) <EvaluationClassificationRegresion>
+
+
+
+Overfitting: Ocurre cuando un modelo sea ajusta demasiado a los datos de enrenamiento, de forma que se los aprende de memoria y no puede generalizar a nuevos datos. Es decir, el modelo se ajusta demasiado a los datos de entrenamiento y no puede generalizar a nuevos datos.
+
+Underfitting: Ocurre cuando el modelo noe  ssuficientemente complejo como para caturar la estructura subyacente de los datos. Es decir, el modelo es demasiado simple para capturar la complejidad de los datos y no puede hacer predicciones precisas. //FIXME: Redaccion chatgpt
+
+
+Para poder evitar el sobreajuste y subajuste se utilizan tecnicas de regularización, las cuales tienen como objetivo reducir la complejidad del modelo y evitar el sobreajuste y lograr generalizar lsoo modelos de Deep Learnign.
+Existen diferentes tecnicas para lograr esto algunas de estas son:
 
 - *Dropout*: Es una tecnica que desactiva un número de neuronas de forma aleatoria.Para aplicar este método se asigna una probabilidad a cada neurona de ser desactivada en la fase de entrenamiento. Esto quiere decir que las conexiones que tenía esa neurona desaparecerán momentáneamente.
 
@@ -742,67 +704,39 @@ En Tesing: Se usan todas las neurionas.
 PAPER: @DropGNN
 
 
-- *Early Stoping*: // TODO: Completar
+- *Early Stoping*: Consiste en detener el entrenamiento antes de que el rendimiento del modelo empiece a empeorar para un conjunto de validación, evitacnd oasi un overfitting sobre lso datos.
 
-- *L1 y L2 Regularization*: blablabla // TODO: Completar
+- *L1 y L2 Regularization*: Tecnicas paa comtrolar la complejidad de los modelos.estos incluyen un término de penalización rn la funcion de costo, penaliza lso modelos con valores de coeficientes altos (y por ende complejos), e sto porque modelos  menos complejos son menos propensos a el sobreajuste , mejorando asi la generalización de este. En caso de L1 la penalización esta dada por valor absoluto de los coeficientes y en L2 por el cuadrado de estos, haciendo que para el primer caso elimine caracteistcias y el segundo haga una reduccion más suave de la complejidad, conisdernado aun asi todas las caracteristicas.
 
-- *Data Augmentation*: blablabla// TODO: Completar
+// - *Data Augmentation*: blablabla// TODO: Existe para GNN??
 
-- *Batch Normalization*: blablabla// TODO: Completar
+// - *Batch Normalization*: blablabla// TODO: Completar
 
 === Evaluación
-Model evaluation is the process of using different evaluation metrics to understand a machine learning model’s performance, as well as its strengths and weaknesses.
 
-Evaluation is necessary for ensuring that machine learning models are reliable, generalizable, and capable of making accurate predictions on new, unseen data, which is crucial for their successful deployment in real-world applications. Overfitting and underfitting are the two biggest causes of poor performance of machine learning algorithms.
+La evaluacióne es el proceso de usar diferentes métricas de evaluación para comprender el rendimiento de un modelo de aprendizaje automático, así como sus fortalezas y debilidades.
+Este es necesario paa poder asegurar que un modelo sea confiable, generalizable y capaz de realizar predicciones correctas sobre nuevos datos no vistos.
 
-
-
-#figure(
-  image("../imagenes/EvaluationClassificationRegresion.png", width: 60%),
-  caption: [Evaluation.],
-) <EvaluationClassificationRegresion>
-
-
-
-Overfitting: Occurs when the model is so closely aligned to the training data that it does not know how to respond to new data.
-
-Underfitting: Occurs when the model cannot adequately capture the underlying structure of the data.
-
-Right Fit: Occurs when both the training data error and the test data are minimal
 ==== Metricas de evaluación
+Existen diferentes metricas para poder evaluar un modelo de MAchine Learning ebn base a la tarea que ester ealizará, algunas de estas son:
 
-Evaluation Metrics
+- Metricas de Clasificación: Accuracy, Precision, Recall,F1-score, ROC, AUC, etc.
 
-There are different metrics for the tasks of classification, regression, ranking, clustering, topic modeling, etc. Some of the metrics are as follows:
+- MEtricas de Regresión: MSE, MAE, R2, etc.
 
-  - Classification Metrics (accuracy, precision, recall, F1-score, ROC, AUC, …)
-  - Regression Metrics (MSE, MAE, R2)
-  - Ranking Metrics (MRR, DCG, NDCG)
-  - Statistical Metrics (Correlation)
-  - Computer Vision Metrics (PSNR, SSIM, IoU)
-  - NLP Metrics (Perplexity, BLEU score)
-  - Deep Learning Related Metrics (Inception score , Frechet Inception distance)
+- Metricas de Ranking: MRR, DCG, NDCG, etc.
+  
+- Metricas de Estadistica: Correlación
+entre otras...
 
-
-
-
-
-
-
-Confusion Matrix
-
-A confusion matrix is a table that is often used to describe the performance of a classification model (or “classifier”) on a set of test data for which the true values are known.
-
+Partiendo con las metricas de clasificación, primero tenemos que entender qué es la *Matriz d eConfusión*.
+Es una tabla que se usa para describir el rendimiento de un modelo de clasificación en el conjunto de testing d elos datos.
+Definiendo dentro de esta los conceptos de True Positive, True Negative, False Positive y False Negative.
 #figure(
   image("../imagenes/Confusion-matrix.png", width: 40%),
   caption: [Matriz de confusión.],
 ) <confusionMatrix>
 
-
-    Predicted: Negative & Actual Value: Positive → Your predicted False (FN)
-    Predicted: Negative & Actual Value: Negative → Your predicted True(TN)
-    Predicted: Pozitive & Actual Value: Positive → Your predicted True (TP)
-    Predicted: Pozitive & Actual Value: Negative→ Your predicted False (FP)
 #h(0.5cm)
 - True Positive (TP): // TODO: Completar
 
@@ -812,12 +746,9 @@ A confusion matrix is a table that is often used to describe the performance of 
 
 - False Negative (FN): // TODO: Completar
 
+Asi la definición de Accuracy, Precision, Recall, F1-Score y ROC para una tarea de clasificación esta dada por:
 
-
-Existen diferentes etricas para medir el desempeño de lso modelos estos  son:
-
-- *Accuracy*: // TODO: Completar
-The most popular metric for evaluating a model isn't a good predictor of how well it will perform. When classrooms are unbalanced, the worst happens. As its name implies, accuracy is a measurement of how accurate a model is.
+- *Accuracy*: Corresponde a la proporcion de predicciones relaizadas correctamente en comparación al numero total de predicciones realizadas. Es decir, de todas las predicciones positivas realizadas, cuantas de estas son realmente positivas.
 
 $
 "Accuracy" = "Correct Predictions" / "Total Predictions"
@@ -827,21 +758,9 @@ $
 "Accuracy" = ("TP" + "TN")/("TP"+"TN"+"FP"+"FN")
 $
 
+- *Precision*: Evalua la exactitud de predicciones positivas realizadas por un modelo. Es la proporción de verdaderos positivos  en proporcion a las predicciones positivas realizadas por la Red. Una alta presicion indica que , cuando el modelo predice un resultado positivo, es probable que sea correcto.
 
-By using confusion matrix, Accuracy = (TP + TN)/(TP+TN+FP+FN)
-
-Consider a model for detecting cancer. Cancer is extremely unlikely to actually exist. If there are 100 patients, let's assume 90 of them are cancer-free, and the other 10 are. We don't want to overlook a patient with cancer who remains undiagnosed (false negative). 90% of the time, everyone is correctly identified as cancer-free. Here, the model did little but provide a cancer-free outcome for each of the 100 forecasts. 
-
-$
- = 
-$
-
-- *Precision*: // TODO: Completar
-Precision is the proportion of true positives to all expected true positives. The denominator is the total number of positives created, true or false, and the numerator is the total number of true positives. The numerator of the equation below only includes genuine positives, whereas the denominator includes both true and false positives. This equation tells us how frequently
-
-- *Recall*: // TODO: Completar
-True Positive Rate or Recall Recall captures the proportion of positive instances among all actual positive cases. The "positive examples" in this instance are values produced by the model, however the "total true positive instances" are supported by test data. The number of real positive cases in the collection will therefore serve as the denominator (false negatives, true positives). We use the proportion of positives known based on verified data rather than the overall number of positives created by the model as was done for the deep learning precision (above). This equation reveals how many more positives the model reported when it should have been negative.
-
+- *Recall o True Positive Rate*: También conocido como Sensibilidad, mide la cpacidad del modelo para identificar todos los ejemplo positivo . Esta dado por la proporcion de verdaderos positivos sobre el total de ejemplo s reales positivos. Un alto recall indica que el modelo es bueno identificando la clase positiva, es decir tiene pocas omisiones de positivos.
 
 $
 "True Positive Rate" = "TP" / ("TP" + "FN")
@@ -850,14 +769,9 @@ $
 "False Positive Rate" = "FP" / ("FP" + "TN")
 $
 
-- ROC :Receiver operating characteristic, or ROC,can be seen on a graph together with TPR and FPR at various threshold levels. TPR and FPR both rise when TPR does. We have four categories, as shown in the first picture, and our goal is to go as close to the top left corner as possible by the threshold value. Choosing the threshold involves the application at hand making comparing various classifiers (here 3) on a particular dataset simple. The better the ROC AUC's numerical value, which is just the regression coefficient.
+- ROC :Receiver operating characteristic. Es una representación gráfica que nos muestra en rendimiento de un modelo de clasificación en base a un umbral de desición. Este ayuda a visulaizar el trade-off entre la tasa de verdaderos positivos y la tasa de falsos positivos en diferentes puntos.
 
-
-ROC curve provides a comprehensive view of a model’s ability to discriminate between classes, especially in binary classification tasks. It helps in understanding the trade-offs between sensitivity and specificity at different decision thresholds, and the AUC offers a single metric for summarizing the overall performance of the model.
-
-    True Positive Rate (Recall)
-    False Positive Rate (FPR)
-
+- AUC: Area Under the Curve, es un valor que representa el area bajo la curva ROC. Mientras más cercano a 1, mejor es el modelo.
 #figure(
   image("../imagenes/noimage.jpg", width: 40%),
   caption: [ROC Curve.],
@@ -868,33 +782,47 @@ $
 "False Positive Rate" = frac("FP", "FP" + "TN")
 $
 
-- *F1-Score*: // TODO: Completar
-F1 Score for Deep Learning Model Analysis The F1 score is calculated by averaging precision and recall. Since both of them must be included, the more precise the model, the greater the F1 score. On the other hand, if the numerator's product falls too far, the F1 score plummets sharply. The greatest extreme ratios of "true:false" positives and "true:false" negatives are found in models with high F1 scores. An effective F1 score, for instance, will be produced if the ratio of genuine positives to false positives is 100:1. A low F1 score will result from a close ratio of true to false - positive, such as 50:51.
+- *F1-Score*: Esta metrica mezcla la presicion y el recall en un solo valor. De esta forma evalua el rendemineto del modelo. Esecialmente util en cpontextos de desbalance de clses 
 
 $
 "F1 score" = 2 * frac("Precision" * "Recall", "Precision" + "Recall")
 $
 
-
+En cuanto a metricas par ala Regresión, tenemos:
+- *Mean Squared Error (MSE)*: Es el promedio de los cuadrados de las diferencias entre los valores predichos y los valores reales. Es decir, mide la media de los errores al cuadrado. //FIXME: Arreglar sacada de chatgpt 
+Su formula está dada por:
+$
+"MSE" = frac(1,n) sum_(i=1)^(n) (y_i - hat(y)_i)^2
+$
+- *Mean Absolute Error (MAE)*: Es el promedio de las diferencias absolutas entre los valores predichos y los valores reales. Es decir, mide la media de los errores absolutos.//FIXME: Arreglar sacada de chatgpt 
+Su formula está dada por:
+$
+"MSE" = frac(1,n) sum_(i=1)^(n) |y_i - hat(y)_i|
+$
+- *R2 Score*: Es una medida de cuánto se ajustan los valores predichos a los valores reales. Es decir, mide la proporción de la varianza en la variable dependiente que es predecible a partir de la variable independiente.//FIXME: Arreglar sacada de chatgpt 
+Su formula está dada por:
+$
+R^2 = 1 - frac(sum_(i=1)^(n) (y_i - hat(y)_i)^2,sum_(i=1)^(n) (y_i - bar(y))^2)
+$
 Para GNN:
 
-https://arxiv.org/pdf/2207.12599
+// https://arxiv.org/pdf/2207.12599
 
-Explanatory Evaluation: Quantitative analyses:
+// Explanatory Evaluation: Quantitative analyses:
 
-- Accuracy Evaluation Accuracy evaluation refers to the process of assessing
-the correctness and fidelity of the explanations generated by an algorithm or
-model. Accurate explanations are essential for building trust in the machine
-learning model’s decision-making process and for ensuring fairness and trans-
-parency. Therefore, accuracy evaluation is a crucial step in developing and eval-
-uating graph explanation algorithms.
-Accuracy (ACC). ACC is the proportion of explanations that are ”correct”.
-There are two definitions to measure the accuracy of explainable methods
+// - Accuracy Evaluation Accuracy evaluation refers to the process of assessing
+// the correctness and fidelity of the explanations generated by an algorithm or
+// model. Accurate explanations are essential for building trust in the machine
+// learning model’s decision-making process and for ensuring fairness and trans-
+// parency. Therefore, accuracy evaluation is a crucial step in developing and eval-
+// uating graph explanation algorithms.
+// Accuracy (ACC). ACC is the proportion of explanations that are ”correct”.
+// There are two definitions to measure the accuracy of explainable methods
 
-$
-"Accuracy" = frac(1,N) sum_(i=1)^N frac(|s_(i)|, |S_(i)|_(gt))
-$
-//FIXME: Nos e si la estoy haciendo bien  https://arxiv.org/pdf/2207.12599
+// $
+// "Accuracy" = frac(1,N) sum_(i=1)^N frac(|s_(i)|, |S_(i)|_(gt))
+// $
+// //FIXME: Nos e si la estoy haciendo bien  https://arxiv.org/pdf/2207.12599
 == Internet
 #h(0.5cm)Antes de abordar la definición de Internet, es crucial comenzar definiendo qué es una Red. Se trata de un conjunto de computadoras conectadas entre sí, que posibilita el intercambio de datos. En este contexto, una red puede ser visualizada como un grafo, donde los nodos representan los computadores y las aristas simbolizan las conexiones entre ellos que permiten el envío de mensajes.
 
