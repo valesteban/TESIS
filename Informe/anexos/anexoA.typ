@@ -115,3 +115,14 @@ Collectors de ROuteVIews:
 
 
 
+= Cosas Extras 
+
+- ¿Cómo se ve el sobreajuste?
+- Heat map para analisar de la importancia de los atributos
+- ¿Por qué se obtienen mejores resultados con GraphSAGE que con CGN?
+- ¿Por que no se ocupo un enfoque transductivo y unicamente uno inductive Learning?
+- Transductive  
+- pros y contra de cada metrica de evaluacion.
+
+
+
