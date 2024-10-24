@@ -113,6 +113,7 @@ def edges_and_relationships_from_dgl_graph(dgl_graph):
 
 # FUNCIONES PARA PLOTEAR --------------------------------------------------------------------------------
 def plot_training(gnn,train_error,training_values_acc,val_error,validation_values_acc,model_complexity,optimal_threshold=None):
+
     """
     Grafica el rendimiento del modelo durante el entrenamiento. Generando dos graficos:1) La accuracy de la predicion para los
     conjuntos de entrenamiento y validación para cada epoch del entrenamiento. a lo largo de las épocas. 2) La Loss para los conjuntos de 
@@ -129,8 +130,8 @@ def plot_training(gnn,train_error,training_values_acc,val_error,validation_value
     """
 
     labels = gnn.dgl_graph.edata['Relationship'].float()
-    train_mask = gnn.train_mask
-    val_mask = gnn.val_mask
+    train_mask = gnn.dgl_graph.edata["train_mask"]
+    val_mask = gnn.dgl_graph.edata["val_mask"]
 
     # Clasificación Binaria
     if optimal_threshold != None:
@@ -145,10 +146,10 @@ def plot_training(gnn,train_error,training_values_acc,val_error,validation_value
         accuracy_validation_per_epoch = []
 
         for train_values,val_values in zip(train_predictions_list_epochs,val_predictions_list_epoches):
-    
+                
             # Etiquetas reales de entrenamiento y validación
-            true_labels_train = labels[train_mask].numpy()  # Convertir a numpy
-            true_labels_val = labels[val_mask].numpy()      # Convertir a numpy
+            true_labels_train = labels[train_mask].numpy()  
+            true_labels_val = labels[val_mask].numpy()      
 
             # Calcular el número de predicciones correctas
             correct_train = np.sum(train_values == true_labels_train)
