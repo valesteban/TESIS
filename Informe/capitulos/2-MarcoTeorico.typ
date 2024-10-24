@@ -550,6 +550,14 @@ Para el caso de Graph Neural Network existen tecnicas especificas debido a que e
 Sampling en GNN es esencial debido a la naturaleza estructurada y muchas veces masiva de los grafos.
 Las tecnicas utilizadsd en GNN  se pueden dividir en 4 categorias principales: Random Node Sampling, Neighbor Sampling, Layer Sampling y Subgraph Sampling.
 
+//TODO: Arrgeglar 
+Methods used in trainig GCN are performed  by selecting partial nodes in a graph as a sample based  on the specific rule
+
+Reduce the computation and storage cost for GCN training.
+Asegurando la eficienci a y escalabilidad en el proceso de trianing un modelo GCN
+
+// FIXME: Pensar y dejar asi o cambiar a primero Node-base sampling, layer-base sampling y subgraph asmplig
+
 //TODO: Leer esto:
 //  "Sampling methods for efficient training of graph convolutional networks: A survey" 
 // https://arxiv.org/pdf/2103.05872
@@ -888,7 +896,40 @@ De este, modo BGP elige caminos mediante la determinación del camino más corto
 
 
 
+
+== Estado del arte
+// TODO: Completar
+
+- Hablar tecnicas que se han usado para representar grafos:
+  - deepwalk
+  - pagerank
+  - bgp2vec
+  - etc
+
+- Habalr uso GNN y datos internet
+
+- hsbalr Problema especifico y como se ha resuelto
+
+
+
+
+
 = Mas inifo que no se donde pondera
+
+
+== Creación de grafos.
+
+PAra trabajar con un grafo de la libreria DGL, los nodos deben tener una representación vectorial. Por lo tanto no nos sobra unicamente con tener la topología de los SA que como se vio en la parte de DATOS puede ser sacada de esas 3 fuentes, siendo la principal y mas RAW la de RIPE NCC y RouteVIews, ya que CAIDA contiene estos datoso pero ya en datsets creados por otros investigadores. 
+Es por esto que tenemos que ver como agregarles las featiures. a lo que se tomaren diferentes enfoques a est e problema:
+- Ocupar features ya creadas por el paper [AGREGAR], elc ual tiene diferentes caracteristicas indicadas en el anex [poenr que parte del anexo] a la fecha de Julio de  2022, sin embargo este dataset contiene muchos valores no conocidos para los SA, además de que hace que solo nos podamos trabajar en esa fecha.
+
+- Crear representaciones en base a las caracteristicas topologicas de nuestro grafo de internet. En este caso se crearon embeddings para lso nodos los cuales contenian el grado de entrada y salida, la cantidad de vecinos, la cantidad de vecinos en comun con otros nodos, entre otros. Tambien se crearon embeddings para las aristas, los cuales contenian la cantidad de vecinos en comun entre los nodos que conectan, la cantidad de nodos en comun entre los nodos que conectan, entre otros.
+
+- Otro enfoque fue crear representaciones de los nodos en base a metodos/algoritmos ya existentes que intentar representar la posicion/importancia de nodo en el contexto de grafo. Se ocupo por ejemplo PageRank, DeepWalk.
+
+. Finalemnet el ultimo enfoque que s etomo fue crear estas representaciones desde 0.
+
+
 == INTERNETT
 #h(0.5cm)
 Paper: The (In)Completeness of the Observed Internet AS-level Structure (2010)
@@ -912,3 +953,7 @@ AS to ORG?
 
 
 -ver si ahy algun clusting en base a lso embeddings que se crean?
+
+
+
+- hablar en alguna parte de inductive learning y GNN, en contras a el transductivo, donde el modelo solo puede hacer predicciones sobre los nodos y aristas que estaban presentes durante el entrenamiento, sin capacidad de generalización a nuevos nodos.[Ver mas en Extras cuader DGL] 
