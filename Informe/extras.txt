@@ -1,4 +1,0 @@
-¿POR QUE GNN?
-- Redes Neuronales Convolucionales convencionales estan limitada s a manejar  data en un espacio euclideano. [A survay on Graph Classification and Link Prediction based on GNN]
-- Euclidean data structures are characterized by fixed arrangmenti rules and order of nodes, such as 2d and 1d sequences.
-¿Que son estructuras euclindeanas?
